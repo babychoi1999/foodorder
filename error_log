@@ -1,0 +1,1 @@
+[01-Feb-2021 07:07:40 UTC] PHP Fatal error:  Cannot use Stripe\Payment as Payment because the name is already in use in /home/w0nagx6cfwos/gravityinfotech.net/project/food-v4/app/Http/Controllers/front/CheckoutController.php on line 19
