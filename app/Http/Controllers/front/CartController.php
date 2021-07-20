@@ -14,6 +14,7 @@ use App\Item;
 use Session;
 use App\Time;
 use App\Payment;
+use App\Address;
 use DateTime;
 
 class CartController extends Controller
@@ -41,6 +42,8 @@ class CartController extends Controller
         ->where('is_available','=','1')
         ->get();
 
+        $addressdata=Address::where('user_id',Session::get('id'))->orderBy('id', 'DESC')->get();
+
         $userinfo=User::select('name','email','mobile','wallet')->where('id',$user_id)
         ->get()->first();
 
@@ -52,13 +55,13 @@ class CartController extends Controller
 
         $getpaymentdata=Payment::select('payment_name','test_public_key','live_public_key','environment')->where('is_available','1')->orderBy('id', 'DESC')->get();
 
-        return view('front.cart', compact('cartdata','getabout','getpromocode','taxval','userinfo','getdata','getpaymentdata'));
+        return view('front.cart', compact('cartdata','getabout','getpromocode','taxval','userinfo','getdata','getpaymentdata','addressdata'));
     }
 
     public function applypromocode(Request $request)
     {
         if($request->promocode == ""){
-            return response()->json(["status"=>0,"message"=>"Promocode is required"],200);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa chọn mã giảm giá"],200);
         }
 
         $user_id  = Session::get('id');

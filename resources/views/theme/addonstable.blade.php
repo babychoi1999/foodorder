@@ -2,8 +2,6 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Tên thể loại</th>
-            <th>Tên sản phẩm</th>
             <th>Tên sản phẩm thêm</th>
             <th>Giá</th>
             <th>Ngày tạo</th>
@@ -17,8 +15,6 @@
         ?>
         <tr id="dataid{{$addons->id}}">
             <td>{{$addons->id}}</td>
-            <td>{{$addons['category']->category_name}}</td>
-            <td>{{$addons['item']->item_name}}</td>
             <td>{{$addons->name}}</td>
             <td>{{number_format($addons->price)}}{{Auth::user()->currency}}</td>
             <td>{{$addons->created_at}}</td>

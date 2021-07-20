@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <img src='{!! asset("images/profile/".$getusers->profile_image) !!}' width="100px" class="rounded-circle" alt="">
+                        <img src='{!! asset("public/images/profile/".$getusers->profile_image) !!}' width="100px" class="rounded-circle" alt="">
                         <h5 class="mt-3 mb-1">{{$getusers->name}}</h5>
                         <p class="m-0">{{$getusers->email}}</p>
                     </div>
@@ -28,7 +28,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <img src='{!! asset("front/images/wallet.png") !!}' width="100px" alt="">
+                        <img src='{!! asset("public/front/images/wallet.png") !!}' width="100px" alt="">
                         <h5 class="mt-3 mb-1">Số dư trong ví</h5>
                         <p class="m-0">{{Auth::user()->currency}}{{number_format($getusers->wallet, 2)}}</p>
                     </div>
@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <img src='{!! asset("front/images/shopping-cart.png") !!}' width="100px" alt="">
+                        <img src='{!! asset("public/front/images/shopping-cart.png") !!}' width="100px" alt="">
                         <h5 class="mt-3 mb-1">{{count($getorders)}}</h5>
                         <p class="m-0">Đơn hàng</p>
                     </div>
@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <img src='{!! asset("front/images/referral-admin.png") !!}' width="100px" alt="">
+                        <img src='{!! asset("public/front/images/referral-admin.png") !!}' width="100px" alt="">
                         <h5 class="mt-3 mb-1">{{$getusers->referral_code}}</h5>
                         <p class="m-0">Mã giới thiệu</p>
                     </div>

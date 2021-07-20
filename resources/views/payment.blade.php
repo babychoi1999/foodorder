@@ -28,7 +28,7 @@
                                     <th>#</th>
                                     <th>Tên</th>
                                     <th>Trạng thái</th>
-                                    <th>Hành động</th>
+                                    {{-- <th>Hành động</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,7 +45,7 @@
                                         <a class="badge badge-primary px-2" onclick="StatusUpdate('{{$payment->id}}','1')" style="color: #fff;">Chặn</a>
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @if($payment->payment_name != 'COD')
                                         <a data-toggle="tooltip" href="{{URL::to('admin/manage-payment/'.$payment->id)}}" data-original-title="View">
                                             <span class="badge badge-warning">Chi tiết</span>
@@ -53,7 +53,7 @@
                                         @else
                                         --
                                         @endif
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 <?php
                                 }

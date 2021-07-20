@@ -7,7 +7,7 @@
                 <div class="cat-aside-wrap">
                     @foreach ($getcategory as $category)
                     <a href="{{URL::to('/product/'.$category->id)}}" class="cat-check border-top-no @if (request()->id == $category->id) active @endif">
-                        <img src='{!! asset("images/category/".$category->image) !!}' alt="">
+                        <img src='{!! asset("public/images/category/".$category->image) !!}' alt="">
                         <p>{{$category->category_name}}</p>
                     </a>
                     @endforeach
@@ -50,11 +50,11 @@
                                 </div>
                                 <div class="product-details">
                                     <p>{{ Str::limit($item->item_description, 60) }}</p>
-                                    <!-- @if (Session::get('id'))
-                                        <button class="btn" onclick="AddtoCart('{{$item->id}}','{{Session::get('id')}}')">Add to Cart</button>
+                                    {{-- @if (Session::get('id'))
+                                    <button class="btn" onclick="AddtoCart('{{$item->id}}','{{Session::get('id')}}')">Add to Cart</button>
                                     @else
-                                        <a class="btn" href="{{URL::to('/signin')}}">Add to Cart</a>
-                                    @endif -->
+                                    <a class="btn" href="{{URL::to('/signin')}}">Add to Cart</a>
+                                    @endif --}}
                                 </div>
                             </div>
                         </div>

@@ -48,7 +48,7 @@ class ItemController extends Controller
     public function productdetails(Request $request) {
         $user_id  = Session::get('id');
         $getabout = About::where('id','=','1')->first();
-        
+
         $getitem = Item::with('category')->select('item.*',DB::raw('(case when favorite.item_id is null then 0 else 1 end) as is_favorite'))
         ->leftJoin('favorite', function($query) use($user_id) {
             $query->on('favorite.item_id','=','item.id')
@@ -58,12 +58,29 @@ class ItemController extends Controller
         if(empty($getitem)){ 
             abort(404); 
         } else {
-            $getimages = ItemImages::select(\DB::raw("CONCAT('".url('/images/item/')."/', image) AS image"))->where('item_id','=',$request->id)->get();
 
-            $getingredients = Ingredients::select(\DB::raw("CONCAT('".url('/images/ingredients/')."/', image) AS image"))->where('item_id','=',$request->id)->get();
+            $arr = explode(',', $getitem->addons_id);
+            foreach ($arr as $value) {
+                $freeaddons['value'] = Addons::whereIn('id',$arr)
+                ->where('is_available','=','1')
+                ->where('is_deleted','=','2')
+                ->where('price','=','0')
+                ->get();
+            };
+            foreach ($arr as $value) {
+                $paidaddons['value'] = Addons::whereIn('id',$arr)
+                ->where('is_available','=','1')
+                ->where('is_deleted','=','2')
+                ->where('price','!=',"0")
+                ->get();
+            };
 
-            $freeaddons = Addons::select('id','name','price')->where('item_id','=',$request->id)->where('is_available','=','1')->where('is_deleted','=','2')->where('price','=','0')->get();
-            $paidaddons = Addons::select('id','name','price')->where('item_id','=',$request->id)->where('is_available','=','1')->where('is_deleted','=','2')->where('price','!=',"0")->get();
+            $irr = explode(',', $getitem->ingredients_id);
+            foreach ($irr as $value) {
+                $getingredients['value'] = Ingredients::select(\DB::raw("CONCAT('".url('public/images/ingredients/')."/', image) AS image"))->whereIn('id',$irr)->get();
+            };
+
+            $getimages = ItemImages::select(\DB::raw("CONCAT('".url('public/images/item/')."/', image) AS image"))->where('item_id','=',$request->id)->get();
 
             $getcategory = Item::where('id','=',$request->id)->first();
 
@@ -185,7 +202,7 @@ class ItemController extends Controller
                     }
 
                     if ($getdata->max_order_qty < $qty) {
-                      return response()->json(['status'=>0,'message'=>"You've reached the maximum units allowed for the purchase of this item"],200);
+                      return response()->json(['status'=>0,'message'=>"Giỏ hàng của bạn đã đầy"],200);
                     }
 
                   $result = DB::table('cart')
@@ -214,7 +231,7 @@ class ItemController extends Controller
                     }
 
                     if ($getdata->max_order_qty < $qty) {
-                      return response()->json(['status'=>0,'message'=>"You've reached the maximum units allowed for the purchase of this item"],200);
+                      return response()->json(['status'=>0,'message'=>"Giỏ hàng của bạn đã đầy"],200);
                     }
 
                   $result = DB::table('cart')

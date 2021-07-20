@@ -15,7 +15,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProduct" data-whatever="@addProduct">Thêm sản phẩm</button>
         <!-- Add Item -->
         <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm mới</h5>
@@ -26,48 +26,97 @@
                         <div class="modal-body">
                             <span id="msg"></span>
                             @csrf
-                            <div class="form-group">
-                                <label for="cat_id" class="col-form-label">Thể loại:</label>
-                                <select name="cat_id" class="form-control" id="cat_id">
-                                    <option value="">Chọn loại sản phẩm</option>
-                                    <?php
-                                foreach ($getcategory as $category) {
-                                ?>
-                                    <option value="{{$category->id}}">{{$category->category_name}}</option>
-                                    <?php
-                                }
-                                ?>
-                                </select>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="cat_id" class="col-form-label">Loại sản phẩm:</label>
+                                        <select name="cat_id" class="form-control" id="cat_id">
+                                            <option value="">Chọn loại sản phẩm</option>
+                                            <?php
+                                        foreach ($getcategory as $category) {
+                                        ?>
+                                            <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                            <?php
+                                        }
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="item_name" class="col-form-label">Tên sản phẩm:</label>
+                                        <input type="text" class="form-control" name="item_name" id="item_name" placeholder="Nhập tên sản phẩm">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="item_name" class="col-form-label">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" name="item_name" id="item_name" placeholder="Item Name">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="price" class="col-form-label">Giá:</label>
+                                        <input type="text" class="form-control" name="price" id="price" placeholder="Nhập giá">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="delivery_time" class="col-form-label">Thời gian vận chuyển:</label>
+                                        <input type="text" class="form-control" name="delivery_time" id="delivery_time" placeholder="Nhập thời gian vận chuyển">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="price" class="col-form-label">Giá:</label>
-                                <input type="text" class="form-control" name="price" id="price" placeholder="Price">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="addons_id" class="col-form-label">Chọn sản phẩm thêm:</label>
+                                        <select name="addons_id[]" class="form-control selectpicker" multiple data-live-search="true" id="addons_id">
+                                            {{-- <option value="">Chọn sản phẩm thêm</option>
+                                            --}}
+                                            <?php
+                                        foreach ($getaddons as $addons) {
+                                        ?>
+                                            <option value="{{$addons->id}}">{{$addons->name}}</option>
+                                            <?php
+                                        }
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="ingredients_id" class="col-form-label">Chọn nguyên liệu :</label>
+                                        <select name="ingredients_id[]" class="form-control selectpicker" multiple data-live-search="true" id="ingredients_id">
+                                            {{-- <option value="">Chọn nguyên liệu </option> --}}
+                                            <?php
+                                        foreach ($getingredients as $ingredients) {
+                                        ?>
+                                            <option value="{{$ingredients->id}}">{{$ingredients->ingredients}}</option>
+                                            <?php
+                                        }
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="delivery_time" class="col-form-label">Thời gian giao:</label>
-                                <input type="text" class="form-control" name="delivery_time" id="delivery_time" placeholder="Delivery time">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-12">
+                                    <div class="form-group">
+                                        <label for="getprice" class="col-form-label">Mô tả:</label>
+                                        <textarea class="form-control" rows="5" name="description" id="description" placeholder="Nhập mô tả"></textarea>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="getprice" class="col-form-label">Mô tả:</label>
-                                <textarea class="form-control" rows="5" name="description" id="description" placeholder="Product Description"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="colour" class="col-form-label">Hình ảnh:</label>
-                                <input type="file" multiple="true" class="form-control" name="file[]" id="file" required="" accept="image/*">
-                                <input type="hidden" name="removeimg" id="removeimg">
-                            </div>
-                            <div class="gallery"></div>
-                            <div class="form-group">
-                                <label for="colour" class="col-form-label">Chọn nguyên liệu:</label>
-                                <input type="file" multiple="true" class="form-control" name="ingredients[]" id="ingredients" accept="image/*">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="colour" class="col-form-label">Hình ảnh:</label>
+                                        <input type="file" multiple="true" class="form-control" name="file[]" id="file" required="" accept="image/*">
+                                        <input type="hidden" name="removeimg" id="removeimg">
+                                    </div>
+                                    <div class="gallery"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                             @if (env('Environment') == 'sendbox')
                             <button type="button" class="btn btn-primary" onclick="myFunction()">Lưu</button>
                             @else
@@ -80,50 +129,98 @@
         </div>
         <!-- Edit Item -->
         <div class="modal fade" id="EditProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabeledit" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <form method="post" name="editproduct" class="editproduct" id="editproduct" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabeledit">Cập nhật sản phẩm</h5>
+                            <h5 class="modal-title" id="exampleModalLabeledit">Chỉnh sửa sản phẩm</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <span id="emsg"></span>
                         <div class="modal-body">
                             <input type="hidden" class="form-control" id="id" name="id">
-                            <div class="form-group">
-                                <label for="getcat_id" class="col-form-label">Thể loại:</label>
-                                <select name="getcat_id" class="form-control" id="getcat_id">
-                                    <option value="">Chọn loại sản phẩm</option>
-                                    <?php
-                                    foreach ($getcategory as $category) {
-                                    ?>
-                                    <option value="{{$category->id}}">{{$category->category_name}}</option>
-                                    <?php
-                                    }
-                                    ?>
-                                </select>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="getcat_id" class="col-form-label">Loại sản phẩm:</label>
+                                        <select name="getcat_id" class="form-control" id="getcat_id">
+                                            <option value="">Chọn loại sản phẩm</option>
+                                            <?php
+                                            foreach ($getcategory as $category) {
+                                            ?>
+                                            <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="getitem_name" class="col-form-label">Tên sản phẩm:</label>
+                                        <input type="text" class="form-control" id="getitem_name" name="item_name" placeholder="Nhập tên sản phẩm">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="getitem_name" class="col-form-label">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" id="getitem_name" name="item_name" placeholder="Item Name">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="getprice" class="col-form-label">Giá bán:</label>
+                                        <input type="text" class="form-control" name="getprice" id="getprice" placeholder="Nhập giá bán">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="getdelivery_time" class="col-form-label">Thời gian vận chuyển:</label>
+                                        <input type="text" class="form-control" name="getdelivery_time" id="getdelivery_time" placeholder="Nhập thời gian vận chuyển">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="getprice" class="col-form-label">Giá:</label>
-                                <input type="text" class="form-control" name="getprice" id="getprice" placeholder="Price">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="getaddons_id" class="col-form-label">Chọn sản phẩm thêm:</label>
+                                        <select name="addons_id[]" class="form-control selectpicker" multiple data-live-search="true" id="getaddons_id">
+                                            {{-- <option value="">Chọn sản phẩm thêm</option> --}}
+                                            <?php
+                                            foreach ($getaddons as $addons) {
+                                            ?>
+                                            <option value="{{$addons->id}}">{{$addons->name}}</option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="getingredients_id" class="col-form-label">Chọn nguyên liệu :</label>
+                                        <select name="ingredients_id[]" class="form-control selectpicker" multiple data-live-search="true" id="getingredients_id">
+                                            {{-- <option value="">Chọn nguyên liệu</option> --}}
+                                            <?php
+                                            foreach ($getingredients as $ingredients) {
+                                            ?>
+                                            <option value="{{$ingredients->id}}">{{$ingredients->ingredients}}</option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="getdelivery_time" class="col-form-label">Thời gian giao:</label>
-                                <input type="text" class="form-control" name="getdelivery_time" id="getdelivery_time" placeholder="Delivery time">
-                            </div>
-                            <div class="form-group">
-                                <label for="getprice" class="col-form-label">Mô tả:</label>
-                                <textarea class="form-control" rows="5" name="getdescription" id="getdescription" placeholder="Product Description"></textarea>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-12">
+                                    <div class="form-group">
+                                        <label for="getprice" class="col-form-label">Mô tả:</label>
+                                        <textarea class="form-control" rows="5" name="getdescription" id="getdescription" placeholder="Nhập mô tả"></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btna-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btna-secondary" data-dismiss="modal">Hủy</button>
                             @if (env('Environment') == 'sendbox')
                             <button type="button" class="btn btn-primary" onclick="myFunction()">Cập nhật</button>
                             @else
@@ -167,7 +264,6 @@ $(document).ready(function() {
         event.preventDefault();
         var form_data = new FormData(this);
         form_data.append('file', $('#file')[0].files);
-        form_data.append('ingredients', $('#ingredients')[0].files);
         $('#preloader').show();
         $.ajax({
             url: "{{ URL::to('admin/item/store') }}",
@@ -262,6 +358,33 @@ function GetData(id) {
             $('#getprice').val(response.ResponseData.item_price);
             $('#getdelivery_time').val(response.ResponseData.delivery_time);
             $('#getdescription').val(response.ResponseData.item_description);
+
+            if (response.ResponseData.addons_id != null) {
+                var addons_id = response.ResponseData.addons_id.split(",");
+
+                $("#getaddons_id option:selected").each(function() {
+                    $(this).removeAttr("selected");
+                });
+
+
+                addons_id.forEach(function(d) {
+                    $('#getaddons_id option[value="' + d + '"]').attr('selected', 'selected');
+                });
+                $('#getaddons_id').selectpicker('refresh');
+            }
+
+            if (response.ResponseData.ingredients_id != null) {
+                var ingredients_id = response.ResponseData.ingredients_id.split(",");
+
+                $("#getingredients_id option:selected").each(function() {
+                    $(this).removeAttr("selected");
+                });
+
+                ingredients_id.forEach(function(d) {
+                    $('#getingredients_id option[value="' + d + '"]').attr('selected', 'selected');
+                });
+                $('#getingredients_id').selectpicker('refresh');
+            }
         },
         error: function(error) {
             $('#preloader').hide();

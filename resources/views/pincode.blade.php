@@ -198,13 +198,13 @@ function GetData(id) {
 
 function DeleteData(id) {
     swal({
-            title: "Are you sure?",
-            text: "Do you want to delete this Pincode?",
+            title: "Bạn chắc chứ?",
+            text: "Bạn có muốn xóa mã vùng này?",
             type: "warning",
             showCancelButton: true,
             confirmButtonClass: "btn-danger",
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel plz!",
+            confirmButtonText: "Có",
+            cancelButtonText: "Không",
             closeOnConfirm: false,
             closeOnCancel: false,
             showLoaderOnConfirm: true,
@@ -223,8 +223,8 @@ function DeleteData(id) {
                     success: function(response) {
                         if (response == 1) {
                             swal({
-                                    title: "Approved!",
-                                    text: "Pincode has been deleted.",
+                                    title: "Thành công!",
+                                    text: "Đã xóa mã vùng.",
                                     type: "success",
                                     showCancelButton: true,
                                     confirmButtonClass: "btn-danger",
@@ -240,15 +240,15 @@ function DeleteData(id) {
                                     }
                                 });
                         } else {
-                            swal("Cancelled", "Something Went Wrong :(", "error");
+                            swal("Đã hủy", "Đã có lỗi xảy ra :(", "error");
                         }
                     },
                     error: function(e) {
-                        swal("Cancelled", "Something Went Wrong :(", "error");
+                        swal("Đã hủy", "Đã có lỗi xảy ra :(", "error");
                     }
                 });
             } else {
-                swal("Cancelled", "Your record is safe :)", "error");
+                swal("Đã hủy", "", "error");
             }
         });
 }
@@ -261,7 +261,8 @@ function PincodeTable() {
         success: function(data) {
             $('#preloader').hide();
             $('#table-display').html(data);
-            $(".zero-configuration").DataTable()
+            $(".zero-configuration").DataTable();
+
         }
     });
 }

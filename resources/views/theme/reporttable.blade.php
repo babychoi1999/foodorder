@@ -47,7 +47,8 @@
             <th>Mã đơn hàng</th>
             <th>Địa chỉ</th>
             <th>Hình thức thanh toán</th>
-            <th>ID thanh toán</th>
+            <th>Loại đơn hàng</th>
+            {{-- <th>ID thanh toán</th> --}}
             <th>Tổng tiền</th>
             <th>Trạng thái</th>
             <th>Tài xế</th>
@@ -67,18 +68,26 @@
             <td>
                 @if($orders->payment_type =='0')
                 COD
-                @elseif($orders->payment_type =='0')
+                @elseif($orders->payment_type =='3')
                 Ví của tôi
+                @else
+                VNPAY
                 @endif
-                Online
             </td>
             <td>
+                @if($orders->order_type == 1)
+                Vận chuyển
+                @else
+                Tự lấy hàng
+                @endif
+            </td>
+            {{-- <td>
                 @if($orders->razorpay_payment_id == '')
                 --
                 @else
                 {{$orders->razorpay_payment_id}}
                 @endif
-            </td>
+            </td> --}}
             <td>{{$orders->order_total}}</td>
             <td>
                 @if($orders->status == '1')

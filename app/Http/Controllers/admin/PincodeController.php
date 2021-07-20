@@ -43,8 +43,11 @@ class PincodeController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'pincode' => 'required|unique:pincode'
+        ],$messages=[
+           'pincode.required'=>'Bạn chưa nhập mã vùng',
+           'pincode.unique'=>'Mã vùng đã tồn tại'
         ]);
         $error_array = array();
         $success_output = '';
@@ -102,8 +105,11 @@ class PincodeController extends Controller
     public function update(Request $request)
     {
 
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'pincode' => 'required|unique:pincode,pincode,' . $request->id,
+        ],$messages=[
+           'pincode.required'=>'Bạn chưa nhập mã vùng',
+           'pincode.unique'=>'Mã vùng đã tồn tại'
         ]);
 
         $error_array = array();

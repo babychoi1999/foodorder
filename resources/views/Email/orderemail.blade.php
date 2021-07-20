@@ -13,7 +13,7 @@
                     <br>
                     <center>
                         <a href="#">
-                            <img alt="" src="{{ $message->embed(asset('assets/images/logo.png')) }}" width="170" height="170" style="display:block;font-family:Helvetica,Arial,sans-serif;color:#666666;font-size:16px" border="0" class="CToWUd">
+                            <img alt="" src="{{ $message->embed(asset('public/assets/images/logo.png')) }}" width="170" height="170" style="display:block;font-family:Helvetica,Arial,sans-serif;color:#666666;font-size:16px" border="0" class="CToWUd">
                         </a>
                     </center>
                 </div>
@@ -27,7 +27,8 @@
                                 </div>
                                 <div style="width:100%;max-width:580px;background:#ffffff;height:auto;padding:15px 0 0px 0">
                                     <div bgcolor="#f8f4e8" align="left" style="padding:0px 0% 0px 0%;font-size:16px;line-height:25px;font-family:'Lato',Helvetica,Arial,sans-serif;color:#6c6e6e;font-weight:500" class="m_-7788511936867687679padding-copy">
-                                        {{$ordermessage}}
+                                        {{$ordermessage}}<br>
+                                        Cảm ơn bạn vì đã ủng hộ chúng tôi!
                                     </div>
                                     <div style="width:100%;max-width:580px;background:#ffffff;height:auto;padding:0px 0 10px 0">
                                         <hr style="border:dashed 1px #e1e1e1;max-width:100%">

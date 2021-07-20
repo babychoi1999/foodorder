@@ -93,7 +93,7 @@ class DriverController extends Controller
             'name' => $users->name,
             'mobile' => $mobile,
             'email' => $users->email,
-            'profile_image' => url('images/profile/'.$users->profile_image)
+            'profile_image' => url('public/images/profile/'.$users->profile_image)
         );
 
 
@@ -127,7 +127,7 @@ class DriverController extends Controller
             if($request->hasFile('image')){
                 $image = $request->file('image');
                 $image = 'profile-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-                $request->image->move('images/profile', $image);
+                $request->image->move('public/images/profile', $image);
                 $user->profile_image=$image;
             }            
         }
@@ -189,7 +189,7 @@ class DriverController extends Controller
                 $newpassword['password'] = Hash::make($password);
                 $update = User::where('email', $request['email'])->update($newpassword);
 
-                $title='Password Reset';
+                $title='Lấy lại mật khẩu';
                 $email=$checklogin->email;
                 $data=['title'=>$title,'email'=>$email,'password'=>$password];
 
@@ -284,7 +284,7 @@ class DriverController extends Controller
         ->join('order','order_details.order_id','=','order.id')
         ->where('order_details.order_id',$request->order_id)->get()->toArray();
         
-        $status=Order::select('order.address','order.landmark','order.building','order.pincode','order.promocode','order.discount_amount','order.order_number','order.status','order.order_notes','order.delivery_charge','order.lat','order.lang','users.name',\DB::raw("CONCAT('".url('/public/images/profile/')."/', users.profile_image) AS profile_image"),'users.mobile')->where('order.id',$request['order_id'])
+        $status=Order::select('order.address','order.landmark','order.building','order.pincode','order.promocode','order.discount_amount','order.order_number','order.status','order.order_notes','order.delivery_charge','order.lat','order.lang','users.name',\DB::raw("CONCAT('".url('/images/profile/')."/', users.profile_image) AS profile_image"),'users.mobile')->where('order.id',$request['order_id'])
         ->join('users','order.user_id','=','users.id')
         ->get()->first();
 

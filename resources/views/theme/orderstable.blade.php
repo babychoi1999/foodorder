@@ -5,7 +5,7 @@
             <th>Tên khách hàng</th>
             <th>Mã đơn hàng</th>
             <th>Hình thức thanh toán</th>
-            <th>ID thanh toán</th>
+            {{-- <th>ID thanh toán</th> --}}
             <th>Loại đơn hàng</th>
             <th>Trạng thái</th>
             <th>Shipper</th>
@@ -26,21 +26,19 @@
             <td>
                 @if($orders->payment_type =='0')
                 COD
-                @elseif($orders->payment_type =='1')
-                RazorPay
-                @elseif($orders->payment_type =='2')
-                Stripe
+                @elseif($orders->payment_type =='4')
+                VNPAY
                 @elseif($orders->payment_type =='3')
                 Ví của tôi
                 @endif
             </td>
-            <td>
+            {{-- <td>
                 @if($orders->razorpay_payment_id == '')
                 --
                 @else
                 {{$orders->razorpay_payment_id}}
                 @endif
-            </td>
+            </td> --}}
             <td>
                 @if($orders->order_type == 1)
                 Vận chuyển
@@ -81,7 +79,7 @@
                 <a class="open-AddBookDialog badge badge-primary px-2" data-toggle="modal" data-id="{{$orders->id}}" data-target="#myModal" style="color: #fff;">Giao cho nhà vận chuyển</a>
                 @endif
                 @elseif ($orders->status == '3')
-                <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Out for Delivery">
+                <a data-toggle="tooltip" data-placement="top" title="" onclick="StatusUpdate('{{$orders->id}}','4')" data-original-title="Out for Delivery">
                     <span class="badge badge-success px-2" style="color: #fff;">Đã giao cho nhà vận chuyển</span>
                 </a>
                 @elseif ($orders->status == '4')

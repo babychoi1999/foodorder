@@ -30,6 +30,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{URL::to('/admin/ingredients')}}" aria-expanded="false">
+                    <i class="fa fa-plus"></i><span class="nav-text">Nguyên liệu</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{URL::to('/admin/banner')}}" aria-expanded="false">
                     <i class="fa fa-bullhorn"></i><span class="nav-text">Banner giảm giá</span>
                 </a>
@@ -81,10 +86,10 @@
             </li>
             <li>
                 <a href="{{URL::to('/admin/contact')}}" aria-expanded="false">
-                    <i class="fa fa-envelope"></i><span class="nav-text">Lời nhắn</span>
+                    <i class="fa fa-envelope"></i><span class="nav-text">Liên hệ của khách hàng</span>
                 </a>
             </li>
-            <li>
+            <li style="display: none;">
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                     <i class="icon-note menu-icon"></i><span class="nav-text">Quản lí</span>
                 </a>

@@ -14,6 +14,9 @@ use App\OrderDetails;
 use App\Payment;
 use App\User;
 use App\Cart;
+use App\Pincode;
+use App\Promocode;
+use App\Transaction;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Charge;
@@ -27,6 +30,341 @@ class CheckoutController extends Controller
     public function index()
     {
         return view('stripe-payment');
+    }
+    public function paywithvnpay(){
+        $payment_content = "Thanh toán hóa đơn";
+        session(['payment_content'=>$payment_content]);
+        $info_customer = Session::get('info_customer');
+        // $order_type = $info_customer['order_type'];
+        $paid_amount = $info_customer['order_total'];
+        return view('front.vnpay',compact('paid_amount','payment_content'));
+    }
+    public function vnpayPayment(Request $request){
+        $getuserdata=User::where('id',Session::get('id'))
+        ->get()->first(); 
+        $totalMoney = $request->order_total;
+        session(['info_customer'=>$request->all()]);
+        if($totalMoney){
+            // return redirect()->route('paywithvnpay',['totalMoney'=>$totalMoney]);
+            return response()->json(['status'=>1,'message'=>'Đã có lỗi trong quá trình gửi mail, vui lòng thử lại...'],200);
+        }
+        else{
+            return response()->json(['status'=>0,'message'=>'Đã có lỗi trong quá trình gửi mail, vui lòng thử lại...'],200);
+        }
+        
+    }
+    public function createPayment(Request $request){
+        
+        $info_customer = Session::get('info_customer');
+        $info_recharge = Session::get('info_recharge');
+        // dd($request->toArray());
+        $vnp_TxnRef = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 10); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo = $request->order_desc;
+        $vnp_OrderType = $request->order_type;
+        if (Session::has('info_recharge')) {
+            $vnp_Amount = str_replace(',', '', $info_recharge['money'])  * 100;
+        }
+        else{
+            $vnp_Amount = str_replace(',', '', $info_customer['order_total'])  * 100;
+        }
+        // $vnp_Amount = str_replace(',', '', $info_customer['order_total'])  * 100;
+        // $vnp_Amount = str_replace(',', '', $info_recharge['money'])  * 100;
+        $vnp_Locale = $request->language;
+        $vnp_BankCode = $request->bank_code;
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+
+        if (Session::has('info_recharge')) {
+            $vnp_Returnurl = route('returnvnpay');
+           
+        }else{
+            $vnp_Returnurl = route('vnpay.return');
+          
+        }  
+
+        $inputData = array(
+            "vnp_Version" => "2.0.0",
+            "vnp_TmnCode" => env('VNP_TMN_CODE'),
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType, 
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        );
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . $key . "=" . $value;
+            } else {
+                $hashdata .= $key . "=" . $value;
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = env('VNP_URL') . "?" . $query;
+        if (env('VNP_HASH_SECRET')) {
+           // $vnpSecureHash = md5($vnp_HashSecret . $hashdata);
+            $vnpSecureHash = hash('sha256', env('VNP_HASH_SECRET') . $hashdata);
+            $vnp_Url .= 'vnp_SecureHashType=SHA256&vnp_SecureHash=' . $vnpSecureHash;
+        }
+        return redirect($vnp_Url);
+    }
+    public function vnpayReturn(Request $request){
+        if($request->vnp_ResponseCode == '00'){
+        $payment_content = Session::get('payment_content');
+        $vnpayData = $request->all();
+        $info_customer = Session::get('info_customer');
+        $getuserdata=User::where('id',Session::get('id'))
+        ->get()->first();
+        $username = $getuserdata->name;
+
+        if ($info_customer['discount_amount'] == "NaN") {
+            $discount_amount = "0.00";
+        } else {
+            $discount_amount = $info_customer['discount_amount'];
+        }    
+
+        try {
+
+            if ($info_customer['order_type'] == "2") {
+
+                $order_number = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 10);
+
+                if ($info_customer['order_type'] == "2") {
+                    $delivery_charge = "0.00";
+                    $address = "";
+                    $lat = "";
+                    $lang = "";
+                    $building = "";
+                    $landmark = "";
+                    $postal_code = "";
+                    $order_total = $info_customer['order_total']-$info_customer['delivery_charge'];
+                } else {
+                    $delivery_charge = $info_customer['delivery_charge'];
+                    $address = $info_customer['address'];
+                    $lat = $info_customer['lat'];
+                    $lang = $$info_customer['lang'];
+                    $order_total = $$info_customer['order_total'];
+                    $building = $info_customer['building'];
+                    $landmark = $info_customer['landmark'];
+                    $postal_code = $info_customer['postal_code'];
+                }
+
+                $order = new Order;
+                $order->order_number =$order_number;
+                $order->user_id =Session::get('id');
+                $order->order_total =$order_total;
+                $order->payment_type ='4';
+                $order->status ='1';
+                $order->address =$address;
+                $order->promocode =$info_customer['promocode'];
+                $order->discount_amount =$discount_amount;
+                $order->discount_pr =$info_customer['discount_pr'];
+                $order->tax =$info_customer['tax'];
+                $order->tax_amount =$info_customer['tax_amount'];
+                $order->delivery_charge =$info_customer['delivery_charge'];
+                $order->order_type =$info_customer['order_type'];
+                $order->lat =$lat;
+                $order->lang =$lang;
+                $order->building =$building;
+                $order->landmark =$landmark;
+                $order->pincode =$postal_code;
+                $order->order_notes =$info_customer['notes'];
+                $order->order_from ='web';
+
+                $order->save();
+
+                $order_id = DB::getPdo()->lastInsertId();
+                $data=Cart::where('cart.user_id',Session::get('id'))
+                ->get();
+                foreach ($data as $value) {
+                    $OrderPro = new OrderDetails;
+                    $OrderPro->order_id = $order_id;
+                    $OrderPro->user_id = $value['user_id'];
+                    $OrderPro->item_id = $value['item_id'];
+                    $OrderPro->price = $value['price'];
+                    $OrderPro->qty = $value['qty'];
+                    $OrderPro->item_notes = $value['item_notes'];
+                    $OrderPro->addons_id = $value['addons_id'];
+                    $OrderPro->save();
+                }
+                $cart=Cart::where('user_id', Session::get('id'))->delete();
+
+                $count=Cart::where('user_id',Session::get('id'))->count();
+
+
+                $vnpay = new Transaction;
+                $vnpay->user_id = Session::get('id');
+                $vnpay->order_id = $order_id;
+                $vnpay->order_number = $order_number;  
+                $vnpay->wallet = NULL;
+                $vnpay->payment_id = '4';
+                $vnpay->order_type = $info_customer['order_type'];
+                $vnpay->transaction_type = '2';
+                $vnpay->save();
+
+                try{
+                    $ordermessage='Đơn hàng của bạn "'.$order_number.'" đang chờ xác nhận';
+                    $email=$getuserdata->email;
+                    $name=$getuserdata->name;
+                    $data=['ordermessage'=>$ordermessage,'email'=>$email,'name'=>$name];
+
+                    Mail::send('Email.orderemail',$data,function($message)use($data){
+                        $message->from(env('MAIL_USERNAME'))->subject($data['ordermessage']);
+                        $message->to($data['email']);
+                    } );
+                }catch(\Swift_TransportException $e){
+                    $response = $e->getMessage() ;
+                    return response()->json(['status'=>0,'message'=>'Đã có lỗi trong quá trình gửi email, hãy thử lại...'],200);
+                }
+                
+                Session::put('cart', $count);
+
+                session()->forget(['offer_amount','offer_code']);
+
+                session()->forget('info_customer');
+
+                session()->forget('payment_content');
+
+                return view('front.vnpayreturn',compact('vnpayData','order_number','username','payment_content'));
+                
+                // return response()->json(['status'=>1,'message'=>'Đơn hàng của bạn đang chờ xác nhận'],200);
+            } else {
+                $pincode=Pincode::select('pincode')->where('pincode',$info_customer['postal_code'])
+                ->get()->first();
+
+                if(@$pincode['pincode'] == $info_customer['postal_code']) {
+                    if(!empty($pincode))
+                    {
+                        $order_number = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10)), 0, 10);
+
+                        if ($info_customer['order_type'] == "2") {
+                            $delivery_charge = "0.00";
+                            $address = "";
+                            $lat = "";
+                            $lang = "";
+                            $building = "";
+                            $landmark = "";
+                            $postal_code = "";
+                            $order_total = $info_customer['order_total']-$info_customer['delivery_charge'];
+                        } else {
+                            $delivery_charge = $info_customer['delivery_charge'];
+                            $address = $info_customer['address'];
+                            $lat = $info_customer['lat'];
+                            $lang = $info_customer['lang'];
+                            $order_total = $info_customer['order_total'];
+                            $building = $info_customer['building'];
+                            $landmark = $info_customer['landmark'];
+                            $postal_code = $info_customer['postal_code'];
+                        }
+
+                        $order = new Order;
+                        $order->order_number =$order_number;
+                        $order->user_id =Session::get('id');
+                        $order->order_total =$order_total;
+                        $order->payment_type ='4';
+                        $order->status ='1';
+                        $order->address =$address;
+                        $order->promocode =$info_customer['promocode'];
+                        $order->discount_amount =$discount_amount;
+                        $order->discount_pr =$info_customer['discount_pr'];
+                        $order->tax =$info_customer['tax'];
+                        $order->tax_amount =$info_customer['tax_amount'];
+                        $order->delivery_charge =$delivery_charge;
+                        $order->order_type =$info_customer['order_type'];
+                        $order->lat =$lat;
+                        $order->lang =$lang;
+                        $order->building =$building;
+                        $order->landmark =$landmark;
+                        $order->pincode =$postal_code;
+                        $order->order_notes =$info_customer['notes'];
+                        $order->order_from ='web';
+
+                        $order->save();
+
+                        $order_id = DB::getPdo()->lastInsertId();
+                        $data=Cart::where('cart.user_id',Session::get('id'))
+                        ->get();
+                        foreach ($data as $value) {
+                            $OrderPro = new OrderDetails;
+                            $OrderPro->order_id = $order_id;
+                            $OrderPro->user_id = $value['user_id'];
+                            $OrderPro->item_id = $value['item_id'];
+                            $OrderPro->price = $value['price'];
+                            $OrderPro->qty = $value['qty'];
+                            $OrderPro->item_notes = $value['item_notes'];
+                            $OrderPro->addons_id = $value['addons_id'];
+                            $OrderPro->save();
+                        }
+                        $cart=Cart::where('user_id', Session::get('id'))->delete();
+
+                        $count=Cart::where('user_id',Session::get('id'))->count();
+
+                        $vnpay = new Transaction;
+                        $vnpay->user_id = Session::get('id');
+                        $vnpay->order_id = $order_id;
+                        $vnpay->order_number = $order_number;
+                        $vnpay->wallet = NULL;
+                        $vnpay->payment_id = '4';
+                        $vnpay->order_type = $info_customer['order_type'];
+                        $vnpay->transaction_type = '2';
+                        $vnpay->save();
+
+                        try{
+                            $ordermessage='Đơn hàng của bạn "'.$order_number.'" đang chờ xác nhận';
+                            $email=$getuserdata->email;
+                            $name=$getuserdata->name;
+                            $data=['ordermessage'=>$ordermessage,'email'=>$email,'name'=>$name];
+
+                            Mail::send('Email.orderemail',$data,function($message)use($data){
+                                $message->from(env('MAIL_USERNAME'))->subject($data['ordermessage']);
+                                $message->to($data['email']);
+                            } );
+                        }catch(\Swift_TransportException $e){
+                            $response = $e->getMessage() ;
+                            return response()->json(['status'=>0,'message'=>'Đã có lỗi trong quá trình gửi email, hãy thử lại...'],200);
+                        }
+                        
+                        Session::put('cart', $count);
+
+                        session()->forget(['offer_amount','offer_code']);
+
+                        session()->forget('info_customer');
+
+                        session()->forget('payment_content');
+
+                        return view('front.vnpayreturn',compact('vnpayData','order_number','username','payment_content'));
+
+                        
+                        
+                        // return response()->json(['status'=>1,'message'=>'Đơn hàng của bạn đang chờ xác nhận'],200);
+                    }
+                } else {
+                    return response()->json(['status'=>0,'message'=>'Địa chỉ của bạn không nằm trong khu vực giao hàng của chúng tôi'],200);
+                }
+
+            }
+            
+
+        } catch (\Exception $e) {
+            return  $e->getMessage();
+            \Session::put('error',$e->getMessage());
+            return redirect()->back();
+        }
+        }
+        
     }
     
     public function charge(Request $request)

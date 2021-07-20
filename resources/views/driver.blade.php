@@ -40,9 +40,9 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                             @if (env('Environment') == 'sendbox')
-                            <button type="button" class="btn btn-primary" onclick="myFunction()">Cập nhật</button>
+                            <button type="button" class="btn btn-primary" onclick="myFunction()">Thêm</button>
                             @else
-                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
                             @endif
                         </div>
                     </form>

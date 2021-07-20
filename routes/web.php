@@ -61,6 +61,12 @@ Route::group(['namespace' => 'front'], function () {
 	Route::post('/signup/signup', 'UserController@register');
 
 	Route::get('/wallet', 'UserController@wallet');
+
+	Route::get('/address', 'UserController@address');
+	Route::post('/user/addaddress', 'UserController@addaddress');
+	Route::post('/user/editaddress', 'UserController@editaddress');
+	Route::post('/user/show', 'UserController@show');
+	Route::post('/user/delete', 'UserController@delete');
 	
 	Route::get('/forgot-password', 'UserController@forgot_password');
 	Route::post('/forgot-password/forgot-password', 'UserController@forgotpassword');
@@ -74,6 +80,17 @@ Route::group(['namespace' => 'front'], function () {
 	Route::get('/paywithrazorpay', 'RazorpayController@payWithRazorpay')->name('paywithrazorpay');
 	// Post Route For Makw Payment Request
 	Route::post('/payment', 'RazorpayController@payment')->name('payment');
+	Route::post('/payment/online','CheckoutController@vnpayPayment');
+	Route::get('/paywithvnpay','CheckoutController@paywithvnpay')->name('paywithvnpay');
+
+	Route::post('/recharge','UserController@recharge');
+	Route::get('/rechargeMoney','UserController@paywithvnpay');
+	// Route::post('/rechargevnpay','UserController@createPayment');
+	Route::get('/returnvnpay','UserController@vnpayReturn')->name('returnvnpay');
+
+
+	Route::post('/paybyvnpay','CheckoutController@createPayment');
+	Route::get('vnpay/return','CheckoutController@vnpayReturn')->name('vnpay.return');
 	
 	Route::post('stripe-payment/charge', 'CheckoutController@charge');
 
@@ -117,6 +134,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('category/update', 'CategoryController@update');
 		Route::post('category/status', 'CategoryController@status');
 		Route::post('category/delete', 'CategoryController@delete');
+
+		Route::get('ingredients', 'IngredientsController@index');
+		Route::post('ingredients/store', 'IngredientsController@store');
+		Route::get('ingredients/list', 'IngredientsController@list');
+		Route::post('ingredients/show', 'IngredientsController@show');
+		Route::post('ingredients/update', 'IngredientsController@update');
+		Route::post('ingredients/status', 'IngredientsController@status');
+		Route::post('ingredients/delete', 'IngredientsController@delete');
 
 		Route::get('item', 'ItemController@index');
 		Route::post('item/store', 'ItemController@store');

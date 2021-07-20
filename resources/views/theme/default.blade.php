@@ -6,21 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Restaurant Admin</title>
+    <title>Foodorder Admin</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{!! asset('assets/images/favicon.png') !!}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{!! asset('public/assets/images/favicon.png') !!}">
     <!-- Pignose Calender -->
-    <link href="{!! asset('assets/plugins/pg-calendar/css/pignose.calendar.min.css') !!}" rel="stylesheet">
+    <link href="{!! asset('public/assets/plugins/pg-calendar/css/pignose.calendar.min.css') !!}" rel="stylesheet">
     <!-- Chartist -->
-    <link rel="stylesheet" href="{!! asset('assets/plugins/chartist/css/chartist.min.css') !!}">
-    <link rel="stylesheet" href="{!! asset('assets/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css') !!}">
-    <link href="{!! asset('assets/plugins/tables/css/datatable/dataTables.bootstrap4.min.css') !!}" rel="stylesheet">
+    <link rel="stylesheet" href="{!! asset('public/assets/plugins/chartist/css/chartist.min.css') !!}">
+    <link rel="stylesheet" href="{!! asset('public/assets/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css') !!}">
+    <link href="{!! asset('public/assets/plugins/tables/css/datatable/dataTables.bootstrap4.min.css') !!}" rel="stylesheet">
     <!-- Custom Stylesheet -->
-    <link href="{!! asset('/assets/plugins/sweetalert/css/sweetalert.css') !!}" rel="stylesheet">
+    <link href="{!! asset('public/assets/plugins/sweetalert/css/sweetalert.css') !!}" rel="stylesheet">
     <!-- Date picker plugins css -->
-    <link href="{!! asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css') !!}" rel="stylesheet">
+    <link href="{!! asset('public/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css') !!}" rel="stylesheet">
     <!-- Daterange picker plugins css -->
-    <link href="{!! asset('assets/css/style.css') !!}" rel="stylesheet">
+    <link href="{!! asset('public/assets/css/style.css') !!}" rel="stylesheet">
 </head>
 
 <body>
@@ -29,7 +29,7 @@
     ********************-->
     <div id="preloader">
         <div class="loader">
-            <img src="{!! asset('front/images/loader.gif') !!}" style="width: 80px;">
+            <img src="{!! asset('public/front/images/loader.gif') !!}" style="width: 80px;">
         </div>
     </div>
     <!--*******************
@@ -75,11 +75,11 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal" value="Close">
+                                                <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal" value="Hủy">
                                                 @if (env('Environment') == 'sendbox')
-                                                <input type="button" onclick="myFunction()" class="btn btn-outline-primary btn-lg" value="Update">
+                                                <input type="button" onclick="myFunction()" class="btn btn-outline-primary btn-lg" value="Lưu">
                                                 @else
-                                                <input type="button" onclick="changePassword()" class="btn btn-outline-primary btn-lg" value="Update">
+                                                <input type="button" onclick="changePassword()" class="btn btn-outline-primary btn-lg" value="Lưu">
                                                 @endif
                                             </div>
                                         </form>
@@ -106,14 +106,14 @@
                                                             <div class="form-group">
                                                                 <label>Thuế (%): </label>
                                                                 <div class="form-group">
-                                                                    <input type="text" placeholder="Enter Tax in percentage (%)" value="{{{Auth::user()->tax}}}" class="form-control" name="tax" id="tax">
+                                                                    <input type="text" placeholder="Nhập thuế (%)" value="{{{Auth::user()->tax}}}" class="form-control" name="tax" id="tax">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-3 col-md-6">
                                                             <div class="form-group">
                                                                 <label>Phí vận chuyển: </label>
-                                                                <input type="text" placeholder="Delivery Charge" value="{{{Auth::user()->delivery_charge}}}" class="form-control" name="delivery_charge" id="delivery_charge">
+                                                                <input type="text" placeholder="Nhập phí vận chuyển" value="{{{Auth::user()->delivery_charge}}}" class="form-control" name="delivery_charge" id="delivery_charge">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -122,8 +122,8 @@
                                                     <div class="row">
                                                         <div class="col-sm-3 col-md-6">
                                                             <div class="form-group">
-                                                                <label>Thưởng giới thiệu: </label>
-                                                                <input type="text" placeholder="Referral Amount" value="{{{Auth::user()->referral_amount}}}" class="form-control" name="referral_amount" id="referral_amount">
+                                                                <label>Tiền thưởng giới thiệu: </label>
+                                                                <input type="text" placeholder="Nhập tiền thưởng giới thiệu" value="{{{Auth::user()->referral_amount}}}" class="form-control" name="referral_amount" id="referral_amount">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-3 col-md-6" style="display:none;">
@@ -136,7 +136,7 @@
                                                 </div>
                                                 <div class="container col-md-12">
                                                     <div class="row">
-                                                        <div class="col-sm-3 col-md-12">
+                                                        <div class="col-sm-3 col-md-12" style="display:none">
                                                             <label>Lấy vị trí hiện tại: </label>
                                                             <div class="form-group">
                                                                 <a href="#" class="badge badge-primary px-2" onclick="getLocation()">
@@ -148,7 +148,7 @@
                                                 </div>
                                                 <div class="container col-md-12">
                                                     <div class="row">
-                                                        <div class="col-sm-3 col-md-6">
+                                                        <div class="col-sm-3 col-md-6" style="display:none">
                                                             <div class="form-group">
                                                                 <label>Vĩ độ: </label>
                                                                 <div class="form-group">
@@ -156,7 +156,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-3 col-md-6">
+                                                        <div class="col-sm-3 col-md-6" style="display:none">
                                                             <div class="form-group">
                                                                 <label>Tung độ: </label>
                                                                 <input type="text" class="form-control" name="lang" id="lang" value="{{{Auth::user()->lang}}}">
@@ -170,7 +170,7 @@
                                                             <div class="form-group">
                                                                 <label>Số lượng đặt tối đa: </label>
                                                                 <div class="form-group">
-                                                                    <input type="text" placeholder="số lượng đặt tối đa trong 1 đơn hàng" value="{{{Auth::user()->max_order_qty}}}" class="form-control" name="max_order_qty" id="max_order_qty">
+                                                                    <input type="text" placeholder="Số lượng tối đa có thể đặt/đơn hàng" value="{{{Auth::user()->max_order_qty}}}" class="form-control" name="max_order_qty" id="max_order_qty">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -190,7 +190,7 @@
                                                 </div>
                                                 <div class="container col-md-12">
                                                     <div class="row">
-                                                        <div class="col-sm-3 col-md-6">
+                                                        <div class="col-sm-3 col-md-6" style="display:none">
                                                             <div class="form-group">
                                                                 <label>Firebase Key: </label>
                                                                 <div class="form-group">
@@ -198,7 +198,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-3 col-md-6">
+                                                        <div class="col-sm-3 col-md-6" style="display:none">
                                                             <div class="form-group">
                                                                 <label>Map Key: </label>
                                                                 <input type="text" class="form-control" name="map" id="map" value="{{{Auth::user()->map}}}">
@@ -208,7 +208,7 @@
                                                 </div>
                                                 <div class="container col-md-12">
                                                     <div class="row">
-                                                        <div class="col-sm-3 col-md-12">
+                                                        <div class="col-sm-3 col-md-12" style="display:none">
                                                             <label>Timezone: </label>
                                                             <div class="form-group">
                                                                 <select class="form-control selectpicker" name="timezone" id="timezone" data-live-search="true">

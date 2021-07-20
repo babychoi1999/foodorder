@@ -2,11 +2,11 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Image</th>
-            <th>Slider Title</th>
-            <th>Description</th>
-            <th>Created at</th>
-            <th>Action</th>
+            <th>Hình ảnh</th>
+            <th>Tên slide</th>
+            <th>Mô tả</th>
+            <th>Thời gian tạo</th>
+            <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
@@ -15,22 +15,22 @@
         ?>
         <tr id="dataid{{$slider->id}}">
             <td>{{$slider->id}}</td>
-            <td><img src='{!! asset("images/slider/".$slider->image) !!}' class='img-fluid' style='max-height: 50px;'></td>
+            <td><img src='{!! asset("public/images/slider/".$slider->image) !!}' class='img-fluid' style='max-height: 50px;'></td>
             <td>{{$slider->title}}</td>
             <td>{{$slider->description}}</td>
             <td>{{$slider->created_at}}</td>
             <td>
                 <span>
                     <a href="#" data-toggle="tooltip" data-placement="top" onclick="GetData('{{$slider->id}}')" title="" data-original-title="Edit">
-                        <span class="badge badge-success">Edit</span>
+                        <span class="badge badge-success">Sửa</span>
                     </a>
                     @if (env('Environment') == 'sendbox')
                     <a href="#" data-toggle="tooltip" data-placement="top" onclick="myFunction()" title="" data-original-title="Delete">
-                        <span class="badge badge-danger">Delete</span>
+                        <span class="badge badge-danger">Xóa</span>
                     </a>
                     @else
                     <a href="#" data-toggle="tooltip" data-placement="top" onclick="DeleteData('{{$slider->id}}')" title="" data-original-title="Delete">
-                        <span class="badge badge-danger">Delete</span>
+                        <span class="badge badge-danger">Xóa</span>
                     </a>
                     @endif
                 </span>

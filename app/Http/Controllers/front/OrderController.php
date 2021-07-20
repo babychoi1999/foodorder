@@ -50,10 +50,10 @@ class OrderController extends Controller
                $value['addons']=Addons::whereIn('id',$arr)->get();
             };
             
-            $status=Order::select('order.driver_id','order.order_number',DB::raw('DATE_FORMAT(order.created_at, "%d %M %Y") as date'),'order.address','order.building','order.landmark','order.pincode','order.order_type','order.promocode','order.id','order.discount_amount','order.order_number','order.status','order.order_notes','order.tax','order.tax_amount','order.delivery_charge')->where('order.id',$request->id)
+            $status=Order::select('order.driver_id','order.order_number',DB::raw('DATE_FORMAT(order.created_at, "%d/%m/%Y") as date'),'order.address','order.building','order.landmark','order.pincode','order.order_type','order.promocode','order.id','order.discount_amount','order.order_number','order.status','order.order_notes','order.tax','order.tax_amount','order.delivery_charge')->where('order.id',$request->id)
             ->get()->first();
 
-            $getdriver=User::select('users.name',\DB::raw("CONCAT('".url('/images/profile/')."/', users.profile_image) AS profile_image"),'users.mobile')->where('users.id',$status->driver_id)
+            $getdriver=User::select('users.name',\DB::raw("CONCAT('".url('public/images/profile/')."/', users.profile_image) AS profile_image"),'users.mobile')->where('users.id',$status->driver_id)
             ->get()->first();
 
             if (@$getdriver["name"] == "") {
@@ -159,11 +159,11 @@ class OrderController extends Controller
                 }
 
                 if ($getdata->min_order_amount > $request->total_order) {
-                    return response()->json(['status'=>0,'message'=>"Gía trị đơn hàng phải trong khoảng: ".$getdata->min_order_amount."".$getdata->currency." and ".$getdata->max_order_amount."".$getdata->currency.""],200);
+                    return response()->json(['status'=>0,'message'=>"Giá trị đơn hàng phải trong khoảng: ".$getdata->min_order_amount."".$getdata->currency." and ".$getdata->max_order_amount."".$getdata->currency.""],200);
                 }
 
                 if ($getdata->max_order_amount < $request->total_order) {
-                    return response()->json(['status'=>0,'message'=>"Gía trị đơn hàng phải trong khoảng: ".$getdata->min_order_amount."".$getdata->currency." and ".$getdata->max_order_amount."".$getdata->currency.""],200);
+                    return response()->json(['status'=>0,'message'=>"Giá trị đơn hàng phải trong khoảng: ".$getdata->min_order_amount."".$getdata->currency." and ".$getdata->max_order_amount."".$getdata->currency.""],200);
                 }
 
                 $order = new Order;
@@ -353,11 +353,11 @@ class OrderController extends Controller
             }
 
             if($request->lat == ""){
-                return response()->json(["status"=>0,"message"=>"Please select the address from suggestion"],200);
+                return response()->json(["status"=>0,"message"=>"Hãy chọn 1 địa chỉ từ gợi ý"],200);
             }
 
             if($request->lang == ""){
-                return response()->json(["status"=>0,"message"=>"Please select the address from suggestion"],200);
+                return response()->json(["status"=>0,"message"=>"Hãy chọn 1 địa chỉ từ gợi ý"],200);
             }
 
             if($request->postal_code == ""){
@@ -365,11 +365,11 @@ class OrderController extends Controller
             }
 
             if($request->building == ""){
-                return response()->json(["status"=>0,"message"=>"Door / Flat No. is required"],200);
+                return response()->json(["status"=>0,"message"=>"Bạn chưa nhập số nhà"],200);
             }
 
             if($request->landmark == ""){
-                return response()->json(["status"=>0,"message"=>"Landmark is required"],200);
+                return response()->json(["status"=>0,"message"=>"Bạn chưa nhập địa điểm"],200);
             }
         } 
 
@@ -470,7 +470,7 @@ class OrderController extends Controller
                 $Wallet = new Transaction;
                 $Wallet->user_id = Session::get('id');
                 $Wallet->order_id = $order_id;
-                $Wallet->order_number = $order_number;
+                $Wallet->order_number = $order_number;  
                 $Wallet->wallet = $order_total;
                 $Wallet->payment_id = NULL;
                 $Wallet->order_type = $request->order_type;
@@ -632,7 +632,7 @@ class OrderController extends Controller
         ->where('order.id',$request['order_id'])
         ->get()->first();
 
-        if ($status->payment_type != "0") {
+        if ($status->payment_type != "0" && $status->payment_type != "4") {
             $walletdata=User::select('wallet')->where('id',$status->user_id)->first();
 
             $wallet = $walletdata->wallet + $status->order_total;

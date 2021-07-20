@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Foodorder App | Terms & Condition</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{!! asset('assets/images/favicon.png') !!}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{!! asset('public/assets/images/favicon.png') !!}">
     <!-- Custom Stylesheet -->
-    <link href="{!! asset('assets/css/style.css') !!}" rel="stylesheet">
+    <link href="{!! asset('public/public/assets/css/style.css') !!}" rel="stylesheet">
 </head>
 
 <body>
@@ -64,11 +64,11 @@
     <!--**********************************
         Scripts
     ***********************************-->
-    <script src="{!! asset('assets/plugins/common/common.min.js') !!}"></script>
-    <script src="{!! asset('assets/js/custom.min.js') !!}"></script>
-    <script src="{!! asset('assets/js/settings.js') !!}"></script>
-    <script src="{!! asset('assets/js/gleek.js') !!}"></script>
-    <script src="{!! asset('assets/js/styleSwitcher.js') !!}"></script>
+    <script src="{!! asset('public/assets/plugins/common/common.min.js') !!}"></script>
+    <script src="{!! asset('public/assets/js/custom.min.js') !!}"></script>
+    <script src="{!! asset('public/assets/js/settings.js') !!}"></script>
+    <script src="{!! asset('public/assets/js/gleek.js') !!}"></script>
+    <script src="{!! asset('public/assets/js/styleSwitcher.js') !!}"></script>
 </body>
 
 </html>

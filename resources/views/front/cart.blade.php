@@ -105,17 +105,24 @@
                         <label for="cart-delivery">
                             <input type="radio" name="cart-delivery" id="cart-delivery" checked value="1">
                             <div class="cart-delivery-type-box">
-                                <img src="{!! asset('front/images/pickup-truck.png') !!}" height="40" width="40" alt="">
-                                <p>Ship hàng</p>
+                                <img src="{!! asset('public/front/images/pickup-truck.png') !!}" height="40" width="40" alt="">
+                                <p>Vận chuyển</p>
                             </div>
                         </label>
                         <label for="cart-pickup">
                             <input type="radio" name="cart-delivery" id="cart-pickup" value="2">
                             <div class="cart-delivery-type-box">
-                                <img src="{!! asset('front/images/delivery.png') !!}" height="40" width="40" alt="">
+                                <img src="{!! asset('public/front/images/delivery.png') !!}" height="40" width="40" alt="">
                                 <p>Tự lấy hàng</p>
                             </div>
                         </label>
+                    </div>
+                    <div class="select_add mb-3">
+                        @if (!$addressdata->isEmpty())
+                        <p data-toggle="modal" data-target="#select_address" style="width: 50%;" class="btn">Chọn địa chỉ</p>
+                        @else
+                        <a href="{{URL::to('/address')}}" style="width: 50%;" class="btn">Thêm địa chỉ</a>
+                        @endif
                     </div>
                     @if (env('Environment') == 'sendbox')
                     <div class="promo-wrap open">
@@ -191,15 +198,20 @@
                         <button type="button" style="width: 100%;" class="btn open comman" onclick="CashonDelivery()">Thanh toán khi nhận hàng</button>
                     </div>
                     @endif
-                    @if ($paymentdata->payment_name == "RazorPay")
+                    @if ($paymentdata->payment_name == "VNPAY")
+                    <div class="mt-3">
+                        <button type="button" style="width: 100%;" class="btn buy_now open comman">Thanh toán online</button>
+                    </div>
+                    @endif
+                    {{-- @if ($paymentdata->payment_name == "RazorPay")
                     <div class="mt-3">
                         <button type="button" style="width: 100%;" class="btn buy_now open comman">RazorPay Payment</button>
-                    </div>
-                    @if($paymentdata->environment=='1')
-                    <input type="hidden" name="razorpay" id="razorpay" value="{{$paymentdata->test_public_key}}">
+                    </div> --}}
+                    {{-- @if($paymentdata->environment=='1')
+                    <input type="hidden" name="
+                    " id="razorpay" value="{{$paymentdata->test_public_key}}">
                     @else
                     <input type="hidden" name="razorpay" id="razorpay" value="{{$paymentdata->live_public_key}}">
-                    @endif
                     @endif
                     @if ($paymentdata->payment_name == "Stripe")
                     <div class="mt-3">
@@ -211,7 +223,7 @@
                     @else
                     <input type="hidden" name="stripe" id="stripe" value="{{$paymentdata->live_public_key}}">
                     @endif
-                    @endif
+                    @endif --}}
                     @endforeach
                 </div>
             </div>
@@ -236,6 +248,38 @@
                     <p class="promo-title">{{$promocode->offer_name}}</p>
                     <p class="promo-code-here">Code :: <span>{{$promocode->offer_code}}</span></p>
                     <small>{{$promocode->description}}</small>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Address Modal -->
+<div class="promo-modal modal fade" id="select_address" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-head">
+                <h4>Chọn địa chỉ</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @foreach ($addressdata as $address)
+                <div class="promo-box">
+                    <button class="btn btn-select" style="padding: 0px 18px;" data-address="{{$address->address}}" data-postal_code="{{$address->pincode}}" data-building="{{$address->building}}" data-landmark="{{$address->landmark}}" data-lat="{{$address->lat}}" data-lang="{{$address->lang}}" data-city="{{$address->city}}" data-state="{{$address->state}}" data-country="{{$address->country}}">Chọn</button>
+                    <p class="promo-code-here">
+                        Loại địa chỉ:
+                        @if ($address->address_type == 1)
+                        Nhà riêng
+                        @elseif ($address->address_type == 2)
+                        Nơi làm việc
+                        @else
+                        Khác
+                        @endif
+                    </p>
+                    <p class="promo-title">{{$address->address}}</p>
+                    <small>{{$address->landmark}}, {{$address->building}}, {{$address->pincode}}</small>
                 </div>
                 @endforeach
             </div>
@@ -309,7 +353,7 @@ var handler = StripeCheckout.configure({
             success: function(response) {
                 $('#preloader').hide();
                 if (response.status == 1) {
-                    window.location.href = 'http://localhost/laravel/foodorder/public/orders';
+                    window.location.href = 'http://localhost/laravel/foodorder/orders';
                 } else {
                     $('#ermsg').text(response.message);
                     $('#error-msg').addClass('alert-danger');
@@ -503,6 +547,7 @@ $(document).ready(function() {
             $("#postal_code").show();
             $(".stripe").show();
             $("#dummy-msg").show();
+            $(".select_add").show();
             $("#customButton").hide();
 
             var order_total = parseFloat($('#order_total').val());
@@ -528,6 +573,7 @@ $(document).ready(function() {
             $("#postal_code").hide();
             $("#dummy-msg").hide();
             $(".stripe").hide();
+            $(".select_add").hide();
             $("#customButton").show();
 
             var order_total = parseFloat($('#order_total').val());
@@ -557,7 +603,7 @@ $.ajaxSetup({
 
     }
 });
-$('body').on('click', '.buy_now', function(e) {
+$('.buy_now').on('click', function(e) {
     var order_total = parseFloat($('#order_total').val());
     var tax = parseFloat($('#tax').val());
     var delivery_charge = parseFloat($('#delivery_charge').val());
@@ -633,56 +679,42 @@ $('body').on('click', '.buy_now', function(e) {
                 method: 'POST',
                 success: function(result) {
                     if (result.status == 1) {
-                        var options = {
-                            "key": $('#razorpay').val(),
-                            "amount": (parseInt(paid_amount * 100)), // 2000 paise = INR 20
-                            "name": "Food App",
-                            "description": "Order Value",
-                            "image": "{!! asset('front/images/logo.png') !!}",
-                            "handler": function(response) {
-                                $('#preloader').show();
-                                $.ajax({
-                                    url: 'http://localhost/laravel/foodorder/public/payment',
-                                    type: 'post',
-                                    dataType: 'json',
-                                    data: {
-                                        order_total: paid_amount,
-                                        razorpay_payment_id: response.razorpay_payment_id,
-                                        address: address,
-                                        promocode: promocode,
-                                        discount_amount: discount_amount,
-                                        discount_pr: discount_pr,
-                                        tax: tax,
-                                        tax_amount: tax_amount,
-                                        delivery_charge: delivery_charge,
-                                        notes: notes,
-                                        order_type: order_type,
-                                        lat: lat,
-                                        lang: lang,
-                                        building: building,
-                                        landmark: landmark,
-                                        postal_code: postal_code,
-                                    },
-                                    success: function(msg) {
-                                        $('#preloader').hide();
-                                        window.location.href = 'http://localhost/laravel/foodorder/public/orders';
-                                    }
-                                });
-
+                        $('#preloader').show();
+                        $.ajax({
+                            url: 'http://localhost/laravel/foodorder/paywithvnpay',
+                            type: 'get',
+                        }).done(function(response) {
+                            window.location.href = "http://localhost/laravel/foodorder/paywithvnpay";
+                        });
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
-                            "prefill": {
-                                "contact": '{{@$userinfo->mobile}}',
-                                "email": '{{@$userinfo->email}}',
-                                "name": '{{@$userinfo->name}}',
+                            url: 'http://localhost/laravel/foodorder/payment/online',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                order_total: paid_amount,
+                                address: address,
+                                promocode: promocode,
+                                discount_amount: discount_amount,
+                                discount_pr: discount_pr,
+                                tax: tax,
+                                tax_amount: tax_amount,
+                                delivery_charge: delivery_charge,
+                                notes: notes,
+                                order_type: order_type,
+                                lat: lat,
+                                lang: lang,
+                                building: building,
+                                landmark: landmark,
+                                postal_code: postal_code,
                             },
-                            "theme": {
-                                "color": "#fe734c"
+                            success: function(result) {
+                                $('#preloader').hide();
+                                console.log('ok');
                             }
-                        };
-
-                        var rzp1 = new Razorpay(options);
-                        rzp1.open();
-                        e.preventDefault();
+                        });
                     } else {
                         $('#ermsg').text(result.message);
                         $('#error-msg').addClass('alert-danger');
@@ -708,57 +740,44 @@ $('body').on('click', '.buy_now', function(e) {
             method: 'POST',
             success: function(result) {
                 if (result.status == 1) {
-                    var options = {
-                        "key": $('#razorpay').val(),
-                        "amount": (parseInt(paid_amount * 100)), // 2000 paise = INR 20
-                        "name": "Food App",
-                        "description": "Order Value",
-                        "image": "{!! asset('front/images/logo.png') !!}",
-                        "handler": function(response) {
-                            $('#preloader').show();
-                            $.ajax({
-                                url: 'http://localhost/laravel/foodorder/public/payment',
-                                type: 'post',
-                                dataType: 'json',
-                                data: {
-                                    order_total: paid_amount,
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    address: address,
-                                    promocode: promocode,
-                                    discount_amount: discount_amount,
-                                    discount_pr: discount_pr,
-                                    tax: tax,
-                                    tax_amount: tax_amount,
-                                    delivery_charge: '0.00',
-                                    notes: notes,
-                                    order_type: order_type,
-                                    lat: lat,
-                                    lang: lang,
-                                    building: building,
-                                    landmark: landmark,
-                                    postal_code: postal_code,
-                                },
-                                success: function(msg) {
-                                    $('#preloader').hide();
-                                    window.location.href =
-                                        'http://localhost/laravel/foodorder/public/orders';
-                                }
-                            });
+                    $.ajax({
+                        url: 'http://localhost/laravel/foodorder/paywithvnpay',
+                        type: 'get',
+                    }).done(function(response) {
+                        window.location.href = "http://localhost/laravel/foodorder/paywithvnpay";
+                    });
 
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        "prefill": {
-                            "contact": '{{@$userinfo->mobile}}',
-                            "email": '{{@$userinfo->email}}',
-                            "name": '{{@$userinfo->name}}',
+                        url: 'http://localhost/laravel/foodorder/payment/online',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            order_total: paid_amount,
+                            address: address,
+                            promocode: promocode,
+                            discount_amount: discount_amount,
+                            discount_pr: discount_pr,
+                            tax: tax,
+                            tax_amount: tax_amount,
+                            delivery_charge: '0.00',
+                            notes: notes,
+                            order_type: order_type,
+                            lat: lat,
+                            lang: lang,
+                            building: building,
+                            landmark: landmark,
                         },
-                        "theme": {
-                            "color": "#fe734c"
+                        success: function(result) {
+                            $('#preloader').hide();
+                            console.log('ok');
+
                         }
-                    };
+                    });
 
-                    var rzp1 = new Razorpay(options);
-                    rzp1.open();
-                    e.preventDefault();
+
                 } else {
                     $('#ermsg').text(result.message);
                     $('#error-msg').addClass('alert-danger');
@@ -823,7 +842,7 @@ function WalletOrder() {
         success: function(response) {
             $('#preloader').hide();
             if (response.status == 1) {
-                window.location.href = 'http://localhost/laravel/foodorder/public/orders';
+                window.location.href = 'http://localhost/laravel/foodorder/orders';
             } else {
                 $('#ermsg').text(response.message);
                 $('#error-msg').addClass('alert-danger');
@@ -888,7 +907,7 @@ function CashonDelivery() {
         success: function(response) {
             $('#preloader').hide();
             if (response.status == 1) {
-                window.location.href = 'http://localhost/laravel/foodorder/public/orders';
+                window.location.href = 'http://localhost/laravel/foodorder/orders';
             } else {
                 $('#ermsg').text(response.message);
                 $('#error-msg').addClass('alert-danger');
@@ -1174,6 +1193,29 @@ $('body').on('click', '.btn-copy', function(e) {
     // console.error('Async: Could not copy text: ', err);
     // });
 
+});
+$('body').on('click', '.btn-select', function(e) {
+
+    var address = $(this).attr('data-address');
+    var postal_code = $(this).attr('data-postal_code');
+    var building = $(this).attr('data-building');
+    var landmark = $(this).attr('data-landmark');
+    var lat = $(this).attr('data-lat');
+    var lang = $(this).attr('data-lang');
+    var city = $(this).attr('data-city');
+    var state = $(this).attr('data-state');
+    var country = $(this).attr('data-country');
+
+    $('#address').val(address);
+    $('#postal_code').val(postal_code);
+    $('#building').val(building);
+    $('#landmark').val(landmark);
+    $('#lat').val(lat);
+    $('#lang').val(lang);
+    $('#city').val(city);
+    $('#state').val(state);
+    $('#country').val(country);
+    $('#select_address').modal('hide');
 });
 
 </script>

@@ -65,9 +65,9 @@ class AdminController extends Controller {
             'newpassword'=>'required|min:6',
             'confirmpassword'=>'required_with:newpassword|same:newpassword|min:6',
         ],[
-            'oldpassword.required'=>'Old Password is required',
-            'newpassword.required'=>'New Password is required',
-            'confirmpassword.required'=>'Confirm Password is required'
+            'oldpassword.required'=>'Bạn chưa nhập mật khẩu cũ',
+            'newpassword.required'=>'Bạn chưa nhập mật khẩu mới',
+            'confirmpassword.required'=>'Bạn chưa xác nhận mật khẩu'
         ]);
          
         $error_array = array();
@@ -81,7 +81,7 @@ class AdminController extends Controller {
         }
         else if($request['oldpassword']==$request['newpassword'])
         {
-            $error_array[]='Old and new password must be different';
+            $error_array[]='Mật khẩu cũ và mật khẩu mới không khớp';
         }
         else
         {        
@@ -91,7 +91,7 @@ class AdminController extends Controller {
                 Session::flash('message', '<div class="alert alert-success"><strong>Success!</strong> Password has been changed.!! </div>');
                
             }else{
-                $error_array[]="Old Password is not match.";
+                $error_array[]="Mật khẩu cũ không đúng.";
             }
         }
         $output = array(

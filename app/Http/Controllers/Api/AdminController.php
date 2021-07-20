@@ -51,12 +51,12 @@ class AdminController extends Controller
       else
       {
           $status=0;
-          $message='Password is incorrect';
+          $message='Mật khẩu không chính xác';
           return response()->json(['status'=>$status,'message'=>$message],422);
       }
     } else {
       $status=0;
-      $message='Email is incorrect';
+      $message='Email không chính xác';
       $data="";
       return response()->json(['status'=>$status,'message'=>$message],422);
     }

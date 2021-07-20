@@ -26,10 +26,10 @@ class UserController extends Controller
                 return response()->json(["status"=>0,"message"=>"Email ID is required"],400);
             }
             if($request->name == ""){
-                return response()->json(["status"=>0,"message"=>"Name is required"],400);
+                return response()->json(["status"=>0,"message"=>"Bạn chưa nhập họ tên"],400);
             }
             if($request->mobile == ""){
-                return response()->json(["status"=>0,"message"=>"Mobile is required"],400);
+                return response()->json(["status"=>0,"message"=>"Bạn chưa nhập số điện thoại"],400);
             }
             if($request->token == ""){
                 return response()->json(["status"=>0,"message"=>"Token is required"],400);
@@ -37,12 +37,12 @@ class UserController extends Controller
 
             if(!empty($checkemail))
             {
-                return response()->json(['status'=>0,'message'=>'Email already exist in our system.'],400);
+                return response()->json(['status'=>0,'message'=>'Email này đã được đăng ký.'],400);
             }
 
             if(!empty($checkmobile))
             {
-                return response()->json(['status'=>0,'message'=>'Mobile number already exist in our system.'],400);
+                return response()->json(['status'=>0,'message'=>'Số điện thoại này đã được đăng ký.'],400);
             }
 
             if ($request->login_type == "google" OR $request->login_type == "facebook") {
@@ -107,7 +107,7 @@ class UserController extends Controller
                            $toname=$checkreferral->name;
                            $name=$user->name;
                            
-                           $referralmessage='Your friend "'.$name.'" has used your referral code to register with Grocery User. You have earned "'.$getdata->currency.''.number_format($getdata->referral_amount,2).'" referral amount in your wallet.';
+                           $referralmessage='Bạn của bạn "'.$name.'" đã sử dụng mã giới thiệu của bạn. Bạn nhận được "'.$getdata->currency.''.number_format($getdata->referral_amount,2).'" từ tiền thưởng giới thiệu.';
                            $data=['referralmessage'=>$referralmessage,'email'=>$email,'toname'=>$toname,'name'=>$name];
 
                            Mail::send('Email.referral',$data,function($message)use($data){
@@ -115,8 +115,8 @@ class UserController extends Controller
                                $message->to($data['email']);
                            } );
 
-                           $title = "Referral Earning";
-                           $body = 'Your friend "'.$name.'" has used your referral code to register with Grocery User. You have earned "'.$getdata->currency.''.number_format($getdata->referral_amount,2).'" referral amount in your wallet.';
+                           $title = "Thưởng chia sẻ";
+                           $body = 'Bạn của bạn "'.$name.'" đã sử dụng mã giới thiệu của bạn. Bạn nhận được "'.$getdata->currency.''.number_format($getdata->referral_amount,2).'" từ tiền thưởng giới thiệu.';
                            $google_api_key = $getdata->firebase; 
                            
                            $registrationIds = $checkreferral->token;
@@ -183,15 +183,15 @@ class UserController extends Controller
                         'referral_code' => $user->referral_code,
                         'profile_image' => url('/public/images/profile/'.$user->profile_image),
                     );
-                    return response()->json(['status'=>1,'message'=>'Registration Successful','data'=>$arrayName,'otp'=>$otp],200);
+                    return response()->json(['status'=>1,'message'=>'Đăng ký thành công','data'=>$arrayName,'otp'=>$otp],200);
                 }
                 else
                 {
-                    return response()->json(['status'=>0,'message'=>'Something went wrong'],400);
+                    return response()->json(['status'=>0,'message'=>'Đã có lỗi xảy ra'],400);
                 }
 
             } else {
-                return response()->json(['status'=>0,'message'=>'Referral code is invalid'],200);
+                return response()->json(['status'=>0,'message'=>'Mã giới thiệu không chính xác'],200);
             }
             
         }
@@ -200,7 +200,7 @@ class UserController extends Controller
                 return response()->json(["status"=>0,"message"=>"Email ID is required"],400);
             }
             if($request->name == ""){
-                return response()->json(["status"=>0,"message"=>"Name is required"],400);
+                return response()->json(["status"=>0,"message"=>"Bạn chưa nhập tên"],400);
             }
             if($request->token == ""){
                 return response()->json(["status"=>0,"message"=>"Token is required"],400);
@@ -215,7 +215,7 @@ class UserController extends Controller
                     $arrayName = array(
                         'id' => $usergoogle->id
                     );
-                    return response()->json(['status'=>2,'message'=>"Please add your mobile number",'data'=>$arrayName],200);
+                    return response()->json(['status'=>2,'message'=>"Hãy nhập số điện thoại của bạn",'data'=>$arrayName],200);
                 } else {
                     if($usergoogle->is_verified == '1') 
                     {
@@ -231,9 +231,9 @@ class UserController extends Controller
                             );
 
                             $update=User::where('email',$usergoogle['email'])->update(['token'=>$request->token]);
-                            return response()->json(['status'=>1,'message'=>'Login Successful','data'=>$arrayName],200);
+                            return response()->json(['status'=>1,'message'=>'Đăng nhập thành công!','data'=>$arrayName],200);
                         } else {
-                            return response()->json(['status'=>0,'message'=>'Your account has been blocked by Admin'],200);
+                            return response()->json(['status'=>0,'message'=>'Tài khoản của bạn đã bị khóa bởi admin'],200);
                         }
                     } else {
                                         
@@ -258,7 +258,7 @@ class UserController extends Controller
                 
                 if(!empty($checkemail))
                 {
-                    return response()->json(['status'=>0,'message'=>'Email already exist in our system.'],400);
+                    return response()->json(['status'=>0,'message'=>'Email này đã được đăng ký.'],400);
                 }
 
                 return response()->json(['status'=>2,'message'=>'Successful'],200);
@@ -285,7 +285,7 @@ class UserController extends Controller
                     $arrayName = array(
                         'id' => $userfacebook->id
                     );
-                    return response()->json(['status'=>2,'message'=>"Please add your mobile number",'data'=>$arrayName],200);
+                    return response()->json(['status'=>2,'message'=>"Hãy nhập số điện thoại của bạn",'data'=>$arrayName],200);
                 } else {
                     if($userfacebook->is_verified == '1') 
                     {
@@ -300,9 +300,9 @@ class UserController extends Controller
                                 'profile_image' => url('/public/images/profile/'.$userfacebook->profile_image),
                             );
                             $update=User::where('email',$userfacebook['email'])->update(['token'=>$request->token]);
-                            return response()->json(['status'=>1,'message'=>'Login Successful','data'=>$arrayName],200);
+                            return response()->json(['status'=>1,'message'=>'Đăng nhập thành công!','data'=>$arrayName],200);
                         } else {
-                            return response()->json(['status'=>0,'message'=>'Your account has been blocked by Admin'],200);
+                            return response()->json(['status'=>0,'message'=>'Tài khoản của bạn đã bị khóa bởi admin'],200);
                         }
                         
                     } else {
@@ -340,10 +340,10 @@ class UserController extends Controller
     public function emailverify(Request $request )
     {
         if($request->email == ""){
-            return response()->json(["status"=>0,"message"=>"Email is required"],400);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập email"],400);
         }
         if($request->otp == ""){
-            return response()->json(["status"=>0,"message"=>"OTP is required"],400);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập mã OTP"],400);
         }
         if($request->token == ""){
             return response()->json(["status"=>0,"message"=>"Token is required"],400);
@@ -364,13 +364,13 @@ class UserController extends Controller
                     'profile_image' => url('/public/images/profile/'.$checkuser->profile_image),
                 );
 
-                return response()->json(['status'=>1,'message'=>"Email is verified",'data'=>$arrayName],200);
+                return response()->json(['status'=>1,'message'=>"Email đã được xác thực",'data'=>$arrayName],200);
 
             } else {
-                return response()->json(["status"=>0,"message"=>"Invalid OTP"],400);
+                return response()->json(["status"=>0,"message"=>"Mã OTP không tồn tại"],400);
             }  
         } else {
-            return response()->json(["status"=>0,"message"=>"Email is invalid"],400);
+            return response()->json(["status"=>0,"message"=>"Email không tồn tại"],400);
         }  
     }
 
@@ -439,7 +439,7 @@ class UserController extends Controller
 
                         $data=array('user'=>$arrayName);
                         $status=1;
-                        $message='Login Successful';
+                        $message='Đăng nhập thành công!';
 
                         $data_token['token'] = $request['token'];
                         $update=User::where('email',$request['email'])->update($data_token);
@@ -449,14 +449,14 @@ class UserController extends Controller
                     else
                     {
                         $status=0;
-                        $message='Password is incorrect';
+                        $message='Mật khẩu không chính xác';
                         return response()->json(['status'=>$status,'message'=>$message],422);
                     }
                 }
                 else
                 {
                     $status=0;
-                    $message='Your account has been blocked by Admin';
+                    $message='Tài khoản của bạn đã bị khóa bởi admin';
                     return response()->json(['status'=>$status,'message'=>$message],422);
                 }
             } else {
@@ -476,14 +476,14 @@ class UserController extends Controller
                 $update=User::where('email',$request->email)->update($otp_data);
 
                 $status=2;
-                $message="You haven't verified your email address";
+                $message="Bạn chưa xác thực email";
                 return response()->json(['status'=>$status,'message'=>$message,'otp'=>$otp],422);
             }
         }
         else
         {
             $status=0;
-            $message='Email is incorrect';
+            $message='Email không đúng';
             $data="";
             return response()->json(['status'=>$status,'message'=>$message],422);
         }
@@ -495,7 +495,7 @@ class UserController extends Controller
     public function AddMobile(Request $request)
     {
         if($request->mobile == ""){
-            return response()->json(["status"=>0,"message"=>"Mobile is required"],400);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập số điện thoại"],400);
         }
         if($request->user_id == ""){
             return response()->json(["status"=>0,"message"=>"User ID is required"],400);
@@ -505,7 +505,7 @@ class UserController extends Controller
         
         if(!empty($checkmobile))
         {
-            return response()->json(['status'=>0,'message'=>'Mobile number already exist in our system.'],400);
+            return response()->json(['status'=>0,'message'=>'Số điện thoại đã được đăng ký.'],400);
         }
 
         try {
@@ -599,24 +599,24 @@ class UserController extends Controller
             return response()->json(["status"=>0,"message"=>"User is required"],400);
         }
         if($request->old_password == ""){
-            return response()->json(["status"=>0,"message"=>"Old Password is required"],400);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập mật khẩu cũ"],400);
         }
         if($request->new_password == ""){
-            return response()->json(["status"=>0,"message"=>"New Password is required"],400);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập mật khẩu mới"],400);
         }
         if($request['old_password']==$request['new_password'])
         {
-            return response()->json(['status'=>0,'message'=>'Old and new password must be different'],400);
+            return response()->json(['status'=>0,'message'=>'Mật khẩu cũ và mới phải khác nhau'],400);
         }
         $check_user=User::where('id',$request['user_id'])->get()->first();
         if(Hash::check($request['old_password'],$check_user->password))
         {
             $data['password']=Hash::make($request['new_password']);
             $update=User::where('id',$request['user_id'])->update($data);
-            return response()->json(['status'=>1,'message'=>'Password Updated'],200);
+            return response()->json(['status'=>1,'message'=>'Đổi mật khẩu thành công'],200);
         }
         else{
-            return response()->json(['status'=>0,'message'=>'Incorrect Password'],400);
+            return response()->json(['status'=>0,'message'=>'Mật khẩu không chính xác'],400);
         }
     }
 
@@ -642,7 +642,7 @@ class UserController extends Controller
             if ($isopen->is_open == "1") {
                 return response()->json(['status'=>1,'message'=>'restaurants is open'],200);
             } else {
-                return response()->json(['status'=>0,'message'=>'Store is currently closed. Try after some time'],200);
+                return response()->json(['status'=>0,'message'=>'Cửa hàng tạm đóng cửa. Vui lòng quay lại khi khác'],200);
             }
         }
         else
@@ -661,7 +661,7 @@ class UserController extends Controller
         
         if(empty($checklogin))
         {
-            return response()->json(['status'=>0,'message'=>'Email does not exist'],400);
+            return response()->json(['status'=>0,'message'=>'Email không tồn tài'],400);
         } elseif ($checklogin->google_id != "" OR $checklogin->facebook_id != "") {
             return response()->json(['status'=>0,'message'=>"Your account is registered as social login. Try with that"],200);
         } else {
@@ -679,10 +679,10 @@ class UserController extends Controller
                     $message->from(env('MAIL_USERNAME'))->subject($data['title']);
                     $message->to($data['email']);
                 } );
-                return response()->json(['status'=>1,'message'=>'New Password Sent to your email address'],200);
+                return response()->json(['status'=>1,'message'=>'Mật khẩu mới đã được gửi tới email của bạn'],200);
             }catch(\Swift_TransportException $e){
                 $response = $e->getMessage() ;
-                return response()->json(['status'=>0,'message'=>'Something went wrong while sending email. Please try again'],200);
+                return response()->json(['status'=>0,'message'=>'Đã có lỗi xảy ra trong quá trình gửi mail. Hãy thử lại'],200);
             }
         }
 

@@ -13,7 +13,7 @@
                     <br>
                     <center>
                         <a href="#">
-                            <img alt="" src="{{ $message->embed(asset('assets/images/logo.png')) }}" width="170" height="170" style="display:block;font-family:Helvetica,Arial,sans-serif;color:#666666;font-size:16px" border="0" class="CToWUd">
+                            <img alt="" src="{{ $message->embed(asset('public/assets/images/logo.png')) }}" width="170" height="170" style="display:block;font-family:Helvetica,Arial,sans-serif;color:#666666;font-size:16px" border="0" class="CToWUd">
                         </a>
                     </center>
                 </div>

@@ -44,11 +44,19 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'name' => 'required',
-          'email' => 'required|unique:users',
+          'email' => 'required|email|unique:users',
           'mobile' => 'required|unique:users',
           'password' => 'required',
+        ],$messages=[
+            'name.required'=>'Bạn chưa nhập tên tài xế',
+            'email.required'=>'Bạn chưa nhập email',
+            'email.unique'=>'Email đã tồn tại',
+            'email.email'=>'Email chưa đúng định dạng',
+            'mobile.required'=>'Bạn chưa nhập số điện thoại',
+            'mobile.unique'=>'Số điện thoại đã tồn tại',
+            'password.required'=>'Bạn chưa nhập mật khẩu',
         ]);
         $error_array = array();
         $success_output = '';
@@ -113,10 +121,18 @@ class DriverController extends Controller
     public function update(Request $request)
     {
 
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'name' => 'required',
-          'email' => 'required|unique:users,name,' . $request->id,
+          'email' => 'required|email|unique:users,name,' . $request->id,
           'mobile' => 'required|unique:users,mobile,' . $request->id
+        ],$messages=[
+            'name.required'=>'Bạn chưa nhập tên tài xế',
+            'email.required'=>'Bạn chưa nhập email',
+            'email.unique'=>'Email đã tồn tại',
+            'email.email'=>'Email chưa đúng định dạng',
+            'mobile.required'=>'Bạn chưa nhập số điện thoại',
+            'mobile.unique'=>'Số điện thoại đã tồn tại',
+            'password.required'=>'Bạn chưa nhập mật khẩu',
         ]);
 
         $error_array = array();

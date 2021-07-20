@@ -22,9 +22,11 @@ class ItemController extends Controller
 
     public function index() {
         $getcategory = Category::where('is_available','1')->where('is_deleted','2')->get();
+        $getingredients = Ingredients::where('is_deleted','2')->get();
+        $getaddons = Addons::where('is_deleted','2')->where('is_available','1')->get();
         $getitem = Item::select('item.*')->with('category')->join('categories','item.cat_id','=','categories.id')->where('item.is_deleted','2')->where('categories.is_available','1')->get();
 
-        return view('item', compact('getcategory','getitem'));
+        return view('item', compact('getcategory','getitem','getingredients','getaddons'));
     }
 
     public function list()
@@ -35,9 +37,8 @@ class ItemController extends Controller
 
     public function itemimages($id) {
         $getitemimages = ItemImages::where('item_id', $id)->get();
-        $getingredients = Ingredients::where('item_id', $id)->get();
         $itemdetails = Item::join('categories','item.cat_id','=','categories.id')->where('item.id', $id)->get()->first();
-        return view('item-images', compact('getitemimages','itemdetails','getingredients'));
+        return view('item-images', compact('getitemimages','itemdetails'));
     }
 
     /**
@@ -58,12 +59,22 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+
+        $validation = Validator::make($request->all(),$rules=[
           'cat_id' => 'required',
-          'item_name' => 'required',
+          'item_name' => 'required|unique:item,item_name',
           'price' => 'required',
           'file.*' => 'required|mimes:jpeg,png,jpg',
-          'ingredients.*' => 'mimes:jpeg,png,jpg',
+          // 'addons_id'=>'required',
+          // 'ingredients_id'=>'required'
+        ],$messages = [
+            'item_name.required'=>'Bạn chưa nhập tên sản phẩm',
+          'cat_id.required'=>'Bạn chưa chọn loại sản phẩm',
+          'price.required'=>'Bạn chưa nhập giá sản phẩm',
+          'type.required'=>'Bạn chưa chọn phân loại',
+          'item_name.unique'=>'Sản phẩm đã tồn tại',
+          'file.*.mimes'=>'Hình ảnh phải có dạng jpeg, jpg, png'
+          // 'addons_id.required'=>'Bạn chưa chọn sản phẩm thêm'
         ]);
         $error_array = array();
         $success_output = '';
@@ -77,8 +88,18 @@ class ItemController extends Controller
         else
         {
             $item = new Item;
-        
             $item->cat_id =$request->cat_id;
+            if($request->addons_id != NULL){
+                 $item->addons_id =@implode(",",$request->addons_id);
+            }else{
+                $item->addons_id = NULL;
+            }
+            if($request->ingredients_id != NULL){
+                $item->ingredients_id =@implode(",",$request->ingredients_id);
+            }else{
+                $item->ingredients_id = NULL;
+            }
+
             $item->item_name =$request->item_name;
             $item->item_price =$request->price;
             $item->item_description =$request->description;
@@ -94,24 +115,7 @@ class ItemController extends Controller
 
                     
 
-                    $file->move('images/item', $image);
-
-                    $itemimage->item_id =$item->id;
-                    $itemimage->image =$image;
-                    $itemimage->save();
-                }
-            }
-
-            if ($request->hasFile('ingredients')) {
-                $ingredients = $request->file('ingredients');
-                foreach($ingredients as $file){
-
-                    $itemimage = new Ingredients;
-                    $image = 'ingredients-' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-                    
-
-                    $file->move('images/ingredients', $image);
+                    $file->move('public/images/item', $image);
 
                     $itemimage->item_id =$item->id;
                     $itemimage->image =$image;
@@ -130,8 +134,10 @@ class ItemController extends Controller
 
     public function storeimages(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'file.*' => 'required|mimes:jpeg,png,jpg'
+        ],$messages = [
+            'file.*.mimes'=>'Hình ảnh phải có định dạng jpeg, png, jpg',
         ]);
         $error_array = array();
         $success_output = '';
@@ -151,7 +157,7 @@ class ItemController extends Controller
                     $itemimage = new ItemImages;
                     $image = 'item-' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-                    $file->move('images/item', $image);
+                    $file->move('public/images/item', $image);
 
                     $itemimage->item_id =$request->itemid;
                     $itemimage->image =$image;
@@ -170,8 +176,10 @@ class ItemController extends Controller
 
     public function storeingredientsimages(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'ingredients.*' => 'required|mimes:jpeg,png,jpg',
+        ],$messages=[
+            'ingredients.mimes'=>'Hình ảnh phải có định dạng jpeg,png,jpg'
         ]);
         $error_array = array();
         $success_output = '';
@@ -194,7 +202,7 @@ class ItemController extends Controller
 
                     
 
-                    $file->move('images/ingredients', $image);
+                    $file->move('public/images/ingredients', $image);
 
                     $itemimage->item_id =$request->itemid;
                     $itemimage->image =$image;
@@ -228,7 +236,7 @@ class ItemController extends Controller
     {
         $getitem = ItemImages::where('id',$request->id)->first();
         if($getitem->image){
-            $getitem->img=url('/images/item/'.$getitem->image);
+            $getitem->img=url('public/images/item/'.$getitem->image);
         }
         return response()->json(['ResponseCode' => 1, 'ResponseText' => 'Item Image fetch successfully', 'ResponseData' => $getitem], 200);
     }
@@ -237,7 +245,7 @@ class ItemController extends Controller
     {
         $getitem = Ingredients::where('id',$request->id)->first();
         if($getitem->image){
-            $getitem->img=url('/images/ingredients/'.$getitem->image);
+            $getitem->img=url('public/images/ingredients/'.$getitem->image);
         }
         return response()->json(['ResponseCode' => 1, 'ResponseText' => 'Ingredients Image fetch successfully', 'ResponseData' => $getitem], 200);
     }
@@ -262,11 +270,16 @@ class ItemController extends Controller
      */
     public function update(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'getcat_id' => 'required',
           'item_name' => 'required',
           'getprice' => 'required',
-          'getdescription' => 'required'
+          ''
+        ],$messages=[
+            'item_name.required'=>'Bạn chưa nhập tên sản phẩm',
+          'getcat_id.required'=>'Bạn chưa chọn loại sản phẩm',
+          'getprice.required'=>'Bạn chưa nhập giá sản phẩm',
+          'type.required'=>'Bạn chưa chọn phân loại'
         ]);
 
         $error_array = array();
@@ -287,6 +300,16 @@ class ItemController extends Controller
             $item->id = $request->id;
 
             $item->cat_id =$request->getcat_id;
+            if($request->addons_id != NULL){
+                 $item->addons_id =@implode(",",$request->addons_id);
+            }else{
+                $item->addons_id = NULL;
+            }
+            if($request->ingredients_id != NULL){
+                $item->ingredients_id =@implode(",",$request->ingredients_id);
+            }else{
+                $item->ingredients_id = NULL;
+            }
             $item->item_name =$request->item_name;
             $item->item_price =$request->getprice;
             $item->item_description =$request->getdescription;
@@ -328,7 +351,7 @@ class ItemController extends Controller
                 if($request->hasFile('image')){
                     $image = $request->file('image');
                     $image = 'item-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-                    $request->image->move('images/item', $image);
+                    $request->image->move('public/images/item', $image);
                     $itemimage->image=$image;
                     unlink(public_path('images/item/'.$request->old_img));
                 }            
@@ -370,7 +393,7 @@ class ItemController extends Controller
                 if($request->hasFile('image')){
                     $image = $request->file('image');
                     $image = 'ingredients-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-                    $request->image->move('images/ingredients', $image);
+                    $request->image->move('public/images/ingredients', $image);
                     $itemimage->image=$image;
                     unlink(public_path('images/ingredients/'.$request->old_img));
                 }            
@@ -404,7 +427,7 @@ class ItemController extends Controller
     {
         $UpdateDetails = Item::where('id', $request->id)
                     ->update(['is_deleted' => '1']);
-        $addons = Addons::where('item_id', $request->id)->update( array('is_deleted'=>'1') );
+        // $addons = Addons::where('item_id', $request->id)->update( array('is_deleted'=>'1') );
         $UpdateCart = Cart::where('item_id', $request->id)
                             ->delete();
         if ($UpdateDetails) {

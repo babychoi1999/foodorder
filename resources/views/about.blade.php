@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label for="image" class="col-form-label">About Image:</label>
                                 <input type="file" class="form-control" name="image" id="image" value="{{$getabout->image}}">
-                                <img src="{!!asset('images/about/'.$getabout->image)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
+                                <img src="{!!asset('public/images/about/'.$getabout->image)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
                             </div>
                             <p>Footer Settings</p>
                             <div class="form-group">
@@ -67,17 +67,17 @@
                             <div class="form-group">
                                 <label for="logo" class="col-form-label">Logo:</label>
                                 <input type="file" class="form-control" name="logo" id="logo" value="{{$getabout->logo}}">
-                                <img src="{!!asset('images/about/'.$getabout->logo)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
+                                <img src="{!!asset('public/images/about/'.$getabout->logo)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
                             </div>
                             <div class="form-group">
                                 <label for="footer_logo" class="col-form-label">Footer Logo:</label>
                                 <input type="file" class="form-control" name="footer_logo" id="footer_logo" value="{{$getabout->footer_logo}}">
-                                <img src="{!!asset('images/about/'.$getabout->footer_logo)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
+                                <img src="{!!asset('public/images/about/'.$getabout->footer_logo)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
                             </div>
                             <div class="form-group">
                                 <label for="favicon" class="col-form-label">Favicon:</label>
                                 <input type="file" class="form-control" name="favicon" id="favicon" value="{{$getabout->favicon}}">
-                                <img src="{!!asset('images/about/'.$getabout->favicon)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
+                                <img src="{!!asset('public/images/about/'.$getabout->favicon)!!}" class='img-fluid mt-3' style='max-height: 150px;'>
                             </div>
                             <hr>
                             <p>Contacts Settings</p>

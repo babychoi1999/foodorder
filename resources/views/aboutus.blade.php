@@ -1,3 +1,4 @@
+public/public/
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,9 +8,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Food App | About Us</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{!! asset('assets/images/favicon.png') !!}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{!! asset('public/assets/images/favicon.png') !!}">
     <!-- Custom Stylesheet -->
-    <link href="{!! asset('assets/css/style.css') !!}" rel="stylesheet">
+    <link href="{!! asset('public/assets/css/style.css') !!}" rel="stylesheet">
 </head>
 
 <body>

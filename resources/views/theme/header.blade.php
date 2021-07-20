@@ -1,3 +1,4 @@
+public/
 <!-- **********************************
 
     Nav header start
@@ -5,13 +6,13 @@
 ***********************************-->
 <div class="nav-header">
     <div class="brand-logo">
-        <a href="#">
-            <!-- <b class="logo-abbr"><img src="{!! asset('assets/images/logo.png') !!}" alt=""> </b>
+        <a href="{{route('home')}}">
+            <!-- <b class="logo-abbr"><img src="{!! asset('public/assets/images/logo.png') !!}" alt=""> </b>
 
-            <span class="logo-compact"><img src="{!! asset('assets/images/logo-compact.png') !!}" alt=""></span> -->
+            <span class="logo-compact"><img src="{!! asset('public/assets/images/logo-compact.png') !!}" alt=""></span> -->
             <span class="brand-title" style="color: #fff;">
                 Restaurant Admin
-                <!-- <img src="{!! asset('assets/images/logo.png') !!}" height="40" width="40" alt=""> -->
+                <!-- <img src="{!! asset('public/assets/images/logo.png') !!}" height="40" width="40" alt=""> -->
             </span>
         </a>
     </div>
@@ -44,7 +45,7 @@
                 <li class="icons dropdown">
                     <div class="user-img c-pointer position-relative" data-toggle="dropdown">
                         <span class="activity active"></span>
-                        <img src="{!! asset('front/images/logo.png') !!}" height="40" width="40" alt="">
+                        <img src="{!! asset('public/front/images/logo.png') !!}" height="40" width="40" alt="">
                     </div>
                     <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                         <div class="dropdown-content-body">

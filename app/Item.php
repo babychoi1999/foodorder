@@ -14,15 +14,15 @@ class Item extends Model
     }
 
     public function itemimage(){
-        return $this->hasOne('App\ItemImages','item_id','id')->select('item_images.id','item_images.item_id',\DB::raw("CONCAT('".url('/images/item/')."/', item_images.image) AS image"));
+        return $this->hasOne('App\ItemImages','item_id','id')->select('item_images.id','item_images.item_id',\DB::raw("CONCAT('".url('public/images/item/')."/', item_images.image) AS image"));
     }
 
     public function itemimagedetails(){
-        return $this->hasMany('App\ItemImages','item_id','id')->select('item_id',\DB::raw("CONCAT('".url('/images/item/')."/', image) AS itemimage"));
+        return $this->hasMany('App\ItemImages','item_id','id')->select('item_id',\DB::raw("CONCAT('".url('public/images/item/')."/', image) AS itemimage"));
     }
 
     public function ingredients(){
-        return $this->hasMany('App\Ingredients','item_id','id')->select('item_id',\DB::raw("CONCAT('".url('/images/ingredients/')."/', image) AS ingredients_image"));
+        return $this->hasMany('App\Ingredients','item_id','id')->select('item_id',\DB::raw("CONCAT('".url('public/images/ingredients/')."/', image) AS ingredients_image"));
     }
 
     public function addons(){

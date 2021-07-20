@@ -52,6 +52,11 @@ class CategoryController extends Controller
                 return $query->where('is_available', '1');
             })],
             'image' => 'required|image|mimes:jpeg,png,jpg',
+        ],$messages = [
+            'category_name.required'=>'Bạn chưa nhập tên loại sản phẩm',
+            'image.mimes'=>'Hình ảnh phải có định dạng jpeg,png,jpg',
+            'image.required'=>'Bạn chưa chọn hình ảnh',
+            'category_name.unique'=>'Tên loại sản phẩm đã tồn tại'
         ]);
         $error_array = array();
         $success_output = '';
@@ -65,7 +70,7 @@ class CategoryController extends Controller
         else
         {
             $image = 'category-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-            $request->image->move('images/category', $image);
+            $request->image->move('public/images/category', $image);
 
             $category = new Category;
             $category->image =$image;
@@ -91,7 +96,7 @@ class CategoryController extends Controller
         $category = Category::findorFail($request->id);
         $getcategory = Category::where('id',$request->id)->first();
         if($getcategory->image){
-            $getcategory->img=url('images/category/'.$getcategory->image);
+            $getcategory->img=url('public/images/category/'.$getcategory->image);
         }
         return response()->json(['ResponseCode' => 1, 'ResponseText' => 'Category fetch successfully', 'ResponseData' => $getcategory], 200);
     }
@@ -117,9 +122,15 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
 
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules=[
           'category_name' => 'required|unique:categories,category_name,' . $request->id,
           'image' => 'image|mimes:jpeg,png,jpg',
+        ],$messages=[
+            'category_name.required'=>'Bạn chưa nhập tên loại sản phẩm',
+            'image.mimes'=>'Hình ảnh phải có định dạng jpeg,png,jpg',
+            'image.required'=>'Bạn chưa chọn hình ảnh',
+            'category_name.unique'=>'Tên loại sản phẩm đã tồn tại'
+
         ]);
 
         $error_array = array();
@@ -142,7 +153,7 @@ class CategoryController extends Controller
                 if($request->hasFile('image')){
                     $image = $request->file('image');
                     $image = 'category-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-                    $request->image->move('images/category', $image);
+                    $request->image->move('public/images/category', $image);
                     $category->image=$image;
 
                     unlink(public_path('images/category/'.$request->old_img));

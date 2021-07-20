@@ -4,7 +4,7 @@
         <div class="banner-carousel owl-carousel owl-theme">
             @foreach ($getslider as $slider)
             <div class="item">
-                <img src='{!! asset("images/slider/".$slider->image) !!}' alt="">
+                <img src='{!! asset("public/images/slider/".$slider->image) !!}' alt="">
                 <div class="banner-contant">
                     <h1>{{$slider->title}}</h1>
                     <p>{{$slider->description}}</p>
@@ -20,8 +20,8 @@
             @foreach ($getbanner as $banner)
             <div class="item">
                 <div class="feature-box">
-                    <a href="{{URL::to('product-details/'.$banner->item_id)}}">
-                        <img src='{!! asset("images/banner/".$banner->image) !!}' alt="">
+                    <a href="{{URL::to('public/product-details/'.$banner->item_id)}}">
+                        <img src='{!! asset("public/images/banner/".$banner->image) !!}' alt="">
                     </a>
                     <div class="feature-contant">
                     </div>
@@ -38,7 +38,7 @@
             <?php $i=1; ?>
             @foreach ($getcategory as $category)
             <div class="item product-tab">
-                <img src='{!! asset("images/category/".$category->image) !!}' alt=""> {{$category->category_name}}
+                <img src='{!! asset("public/images/category/".$category->image) !!}' alt=""> {{$category->category_name}}
             </div>
             <?php $i++; ?>
             @endforeach
@@ -98,7 +98,7 @@
     <div class="container">
         <div class="about-box">
             <div class="about-img">
-                <img src='{!! asset("images/about/".$getabout->image) !!}' alt="">
+                <img src='{!! asset("public/images/about/".$getabout->image) !!}' alt="">
             </div>
             <div class="about-contant">
                 <h2 class="sec-head text-left">Về chúng tôi</h2>
@@ -132,7 +132,7 @@
             @foreach($getreview as $review)
             <div class="item">
                 <div class="review-profile">
-                    <img src='{!! asset("images/profile/".$review["users"]->profile_image) !!}' alt="">
+                    <img src='{!! asset("public/images/profile/".$review["users"]->profile_image) !!}' alt="">
                 </div>
                 <h3>{{$review['users']->name}}</h3>
                 <p>{{$review->comment}}</p>

@@ -10,16 +10,16 @@
     <div class="col p-md-0">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{URL::to('/admin/home')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Add-on</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Sản phẩm thên</a></li>
         </ol>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAddons" data-whatever="@addAddons">Sản phẩm thêm</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAddons" data-whatever="@addAddons">Thêm sản phẩm thêm</button>
         <!-- Add Add-on -->
         <div class="modal fade" id="addAddons" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Thêm</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm thêm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ trans('labels.close') }}"><span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <form id="add_addons" enctype="multipart/form-data">
@@ -27,41 +27,23 @@
                             <span id="msg"></span>
                             @csrf
                             <div class="form-group">
-                                <label for="cat_id" class="col-form-label">Loại sản phẩm:</label>
-                                <select name="cat_id" class="form-control" id="cat_id">
-                                    <option value="">Chọn loại sản phẩm</option>
-                                    <?php
-                                foreach ($getcategory as $category) {
-                                ?>
-                                    <option value="{{$category->id}}">{{$category->category_name}}</option>
-                                    <?php
-                                }
-                                ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="item_id" class="col-form-label">Sản phẩm:</label>
-                                <select name="item_id" class="form-control" id="item_id">
-                                </select>
-                            </div>
-                            <div class="form-group">
                                 <label for="name" class="col-form-label">Tên sản phẩm thêm:</label>
-                                <input type="text" class="form-control" name="name" id="name" placeholder="Tên sản phẩm">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Nhập tên sản phẩm thêm">
                             </div>
                             <div class="form-group">
                                 <label class="radio-inline mr-3">
                                     <input type="radio" name="type" id="type" value="free" checked="true" onChange="getValue(this)"> Miễn phí</label>
                                 <label class="radio-inline mr-3">
-                                    <input type="radio" name="type" id="type" value="paid" onChange="getValue(this)"> Trả tiền</label>
+                                    <input type="radio" name="type" id="type" value="paid" onChange="getValue(this)"> Trả phí</label>
                                 <label class="radio-inline">
                             </div>
                             <div class="form-group" id="paid" style="display:none">
                                 <label for="price" class="col-form-label">Giá:</label>
-                                <input type="text" class="form-control" name="price" id="price" placeholder="Price">
+                                <input type="text" class="form-control" name="price" id="price" placeholder="Nhập giá ">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                             @if (env('Environment') == 'sendbox')
                             <button type="button" class="btn btn-primary" onclick="myFunction()">Lưu</button>
                             @else
@@ -79,7 +61,7 @@
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabeledit">Chỉnh sửa</h5>
+                            <h5 class="modal-title" id="exampleModalLabeledit">Chỉnh sửa sản phẩm thêm</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -87,41 +69,23 @@
                         <div class="modal-body">
                             <input type="hidden" class="form-control" id="id" name="id">
                             <div class="form-group">
-                                <label for="getcat_id" class="col-form-label">Loại sản phẩm:</label>
-                                <select name="cat_id" class="form-control" id="getcat_id">
-                                    <option value="">Chọn loại sản phẩm</option>
-                                    <?php
-                                    foreach ($getcategory as $category) {
-                                    ?>
-                                    <option value="{{$category->id}}">{{$category->category_name}}</option>
-                                    <?php
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="item_id" class="col-form-label">Sản phẩm:</label>
-                                <select name="item_id" class="form-control" id="getitem_id">
-                                </select>
-                            </div>
-                            <div class="form-group">
                                 <label for="getname" class="col-form-label">Tên sản phẩm thêm:</label>
-                                <input type="text" class="form-control" name="name" id="getname" placeholder="Add-on Name">
+                                <input type="text" class="form-control" name="name" id="getname" placeholder="Nhập tên sản phẩm thêm">
                             </div>
                             <div class="form-group">
                                 <label class="radio-inline mr-3">
                                     <input type="radio" name="type" id="type" value="free" checked="true" onChange="getValue(this)"> Miễn phí</label>
                                 <label class="radio-inline mr-3">
-                                    <input type="radio" name="type" id="type" value="paid" onChange="getValue(this)"> Trả tiền</label>
+                                    <input type="radio" name="type" id="type" value="paid" onChange="getValue(this)"> Trả phí</label>
                                 <label class="radio-inline">
                             </div>
                             <div class="form-group" id="paid">
                                 <label for="getprice" class="col-form-label">Giá:</label>
-                                <input type="text" class="form-control" name="price" id="getprice" placeholder="Price">
+                                <input type="text" class="form-control" name="price" id="getprice" placeholder="Nhập giá">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btna-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btna-secondary" data-dismiss="modal">Hủy</button>
                             @if (env('Environment') == 'sendbox')
                             <button type="button" class="btn btn-primary" onclick="myFunction()">Cập nhật</button>
                             @else
@@ -174,6 +138,7 @@ $(document).ready(function() {
             processData: false,
             dataType: "json",
             success: function(result) {
+                console.log(price);
                 $('#preloader').hide();
                 var msg = '';
                 if (result.error.length > 0) {
@@ -285,6 +250,12 @@ $(document).ready(function() {
     });
 });
 
+// function valuechange() {
+//     if ($("input[name=type][value=paid]").prop('checked')) {
+//         document.getElementById("paid").style.display = 'block';
+//     }
+// }
+
 function GetData(id) {
     $('#preloader').show();
     $.ajax({
@@ -306,9 +277,9 @@ function GetData(id) {
             $('#getname').val(response.ResponseData.name);
             $('#getprice').val(response.ResponseData.price);
             if (response.ResponseData.price == "0") {
-                $("input[name=type][value=free]").attr('checked', 'checked');
+                $("input[name=type][value=free]").attr('checked', '');
             } else {
-                $("input[name=type][value=paid]").attr('checked', 'checked');
+                $("input[name=type][value=paid]").attr('checked', '');
             }
             let html = '';
             for (i in response.item) {

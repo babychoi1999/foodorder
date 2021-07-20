@@ -14,7 +14,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">All Ordres</h4>
+                    <h4 class="card-title">Danh sách đơn hàng</h4>
                     <div class="table-responsive" id="table-display">
                         @include('theme.orderstable')
                     </div>

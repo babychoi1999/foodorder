@@ -45,12 +45,18 @@ class BannerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $validation = Validator::make($request->all(),[
+    {   
+        $validation = Validator::make($request->all(), $rules = [
           'image' => 'required|mimes:jpeg,png,jpg',
+          'item_id' =>'required',
+        ], $messages = [
+          'image.required'=>'Bạn chưa chọn hình ảnh',
+          'image.mimes'=>'Hình ảnh phải có định dạng jpeg, png hoặc jpg',
+          'item_id.required'=>'Bạn chưa chọn sản phẩm'
         ]);
         $error_array = array();
         $success_output = '';
+
         if ($validation->fails())
         {
             foreach($validation->messages()->getMessages() as $field_name => $messages)
@@ -61,7 +67,7 @@ class BannerController extends Controller
         else
         {
             $image = 'banner-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-            $request->image->move('images/banner', $image);
+            $request->image->move('public/images/banner', $image);
 
             $banner = new Banner;
             $banner->image =$image;
@@ -87,7 +93,7 @@ class BannerController extends Controller
         $banner = Banner::findorFail($request->id);
         $getbanner = Banner::where('id',$request->id)->first();
         if($getbanner->image){
-            $getbanner->image=url('images/banner/'.$getbanner->image);
+            $getbanner->image=url('public/images/banner/'.$getbanner->image);
         }
         return response()->json(['ResponseCode' => 1, 'ResponseText' => 'Banner fetch successfully', 'ResponseData' => $getbanner], 200);
     }
@@ -112,8 +118,13 @@ class BannerController extends Controller
      */
     public function update(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(), $rules = [
           'image' => 'mimes:jpeg,png,jpg',
+          'item_id'=>'required'
+        ],$messages = [
+           'image.required'=>'Bạn chưa chọn hình ảnh',
+          'image.mimes'=>'Hình ảnh phải có định dạng jpeg, png hoặc jpg',
+          'item_id.required'=>'Bạn chưa chọn sản phẩm'
         ]);
         $error_array = array();
         $success_output = '';
@@ -135,7 +146,7 @@ class BannerController extends Controller
                 if($request->hasFile('image')){
                     $image = $request->file('image');
                     $image = 'banner-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-                    $request->image->move('images/banner', $image);
+                    $request->image->move('public/images/banner', $image);
                     $banner->image=$image;
                 }            
             }

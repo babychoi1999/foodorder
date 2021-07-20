@@ -10,24 +10,24 @@
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
     <meta property="og:title" content="Food_Order" />
     <meta property="og:description" content="Restaurant food ordering Website is a catalyst for the food industry. The website lets you (a restaurateur) connect with the customers who wish to either get food delivered or pick-up food. The website lets you track customers’ order till the food delivery. With this website you can easily manage the entire restaurant food business to achieve maximum growth." />
-    <meta property="og:image" content='{!! asset("front/images/banner.png") !!}' />
+    <meta property="og:image" content='{!! asset("public/front/images/banner.png") !!}' />
     <!-- favicon-icon  -->
-    <link rel="icon" href='{!! asset("images/about/".$getabout->favicon) !!}' type="image/x-icon">
+    <link rel="icon" href='{!! asset("public/images/about/".$getabout->favicon) !!}' type="image/x-icon">
     <!-- font-awsome css  -->
-    <link rel="stylesheet" type="text/css" href="{!! asset('front/css/font-awsome.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('public/front/css/font-awsome.css') !!}">
     <!-- fonts css -->
-    <link rel="stylesheet" type="text/css" href="{!! asset('front/fonts/fonts.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('public/front/fonts/fonts.css') !!}">
     <!-- bootstrap css -->
-    <link rel="stylesheet" type="text/css" href="{!! asset('front/css/bootstrap.min.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('public/front/css/bootstrap.min.css') !!}">
     <!-- fancybox css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
     <!-- owl.carousel css -->
-    <link rel="stylesheet" type="text/css" href="{!! asset('front/css/owl.carousel.min.css') !!}">
-    <link href="{!! asset('assets/plugins/sweetalert/css/sweetalert.css') !!}" rel="stylesheet" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{!! asset('public/front/css/owl.carousel.min.css') !!}">
+    <link href="{!! asset('public/assets/plugins/sweetalert/css/sweetalert.css') !!}" rel="stylesheet" rel="stylesheet">
     <!-- style css  -->
-    <link rel="stylesheet" type="text/css" href="{!! asset('front/css/style.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('public/front/css/style.css') !!}">
     <!-- responsive css  -->
-    <link rel="stylesheet" type="text/css" href="{!! asset('front/css/responsive.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('public/front/css/responsive.css') !!}">
 </head>
 
 <body>
@@ -38,7 +38,7 @@
 	********************-->
     <div id="preloader" style="display: none;">
         <div class="loader">
-            <img src="{!! asset('front/images/loader.gif') !!}">
+            <img src="{!! asset('public/front/images/loader.gif') !!}">
         </div>
     </div>
     <!--*******************
@@ -50,7 +50,7 @@
     <header>
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand" href="{{URL::to('/')}}"><img src='{!! asset("images/about/".$getabout->logo) !!}' alt=""></a>
+                <a class="navbar-brand" href="{{URL::to('/')}}"><img src='{!! asset("public/images/about/".$getabout->logo) !!}' alt=""></a>
                 <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <div class="menu-icon">
                         <div class="bar1"></div>
@@ -91,7 +91,7 @@
                         <li class="nav-item search">
                             <form method="get" action="{{URL::to('/search')}}">
                                 <div class="search-input">
-                                    <input type="search" name="item" placeholder="Search here" required="">
+                                    <input type="search" name="item" placeholder="Tìm kiếm" required="">
                                 </div>
                                 <button type="submit" class="nav-link"><i class="far fa-search"></i></button>
                             </form>
@@ -103,11 +103,12 @@
                         @if (Session::get('id'))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0)">
-                                <img src='{!! asset("images/profile/".Session::get("profile_image")) !!}' alt="">
+                                <img src='{!! asset("public/images/profile/".Session::get("profile_image")) !!}' alt="">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="javascript:void(0)">Hello, {{Session::get('name')}}</a>
                                 <a class="dropdown-item" href="" data-toggle="modal" data-target="#AddReview">Thêm đánh giá</a>
+                                <a class="dropdown-item" href="{{URL::to('/address')}}">Địa chỉ của tôi</a>
                                 <a class="dropdown-item" href="" data-toggle="modal" data-target="#Refer">Chia sẻ mã</a>
                                 <a class="dropdown-item" href="" data-toggle="modal" data-target="#ChangePasswordModal">Đổi mật khẩu</a>
                                 <a class="dropdown-item" href="{{URL::to('/logout')}}">Đăng xuất</a>

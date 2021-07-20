@@ -14,7 +14,7 @@
         @foreach ($getdriver as $driver)
         <tr id="dataid{{$driver->id}}">
             <td>{{$driver->id}}</td>
-            <td><img src='{!! asset("images/profile/".$driver->profile_image) !!}' style="width: 100px;"></td>
+            <td><img src='{!! asset("public/images/profile/".$driver->profile_image) !!}' style="width: 100px;"></td>
             <td>{{$driver->name}}</td>
             <td>{{$driver->email}}</td>
             <td>{{$driver->mobile}}</td>

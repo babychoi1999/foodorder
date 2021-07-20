@@ -22,7 +22,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="category_name" class="col-form-label">Tên loại</label>
-                                <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Tên loại sản phẩm">
+                                <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Nhập tên loại sản phẩm">
                             </div>
                             <div class="form-group">
                                 <label for="image" class="col-form-label">Hình ảnh</label>

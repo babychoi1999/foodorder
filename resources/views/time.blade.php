@@ -82,20 +82,20 @@
                                 <input type="hidden" name="day[]" value="{{$time->day}}">
                                 @if ($time->always_close == '2')
                                 <div class="form-group col-md-3">
-                                    <input type="text" class="form-control" placeholder="Opening Hours" id="open{{$time->day}}" name="open_time[]" value="{{$time->open_time}}">
+                                    <input type="text" class="form-control" placeholder="Giờ mở cửa" id="open{{$time->day}}" name="open_time[]" value="{{$time->open_time}}">
                                 </div>
                                 @else
                                 <div class="form-group col-md-3">
-                                    <input type="text" class="form-control" placeholder="Opening Hours" id="open{{$time->day}}" name="open_time[]" value="Closed" readonly="">
+                                    <input type="text" class="form-control" placeholder="Giờ mở cửa" id="open{{$time->day}}" name="open_time[]" value="Closed" readonly="">
                                 </div>
                                 @endif
                                 @if ($time->always_close == '2')
                                 <div class="form-group col-md-3">
-                                    <input type="text" class="form-control" placeholder="Closing Time" id="close{{$time->day}}" name="close_time[]" value="{{$time->close_time}}">
+                                    <input type="text" class="form-control" placeholder="Giờ đóng cửa" id="close{{$time->day}}" name="close_time[]" value="{{$time->close_time}}">
                                 </div>
                                 @else
                                 <div class="form-group col-md-3">
-                                    <input type="text" class="form-control" placeholder="Closing Time" id="close{{$time->day}}" name="close_time[]" value="Closed" readonly="">
+                                    <input type="text" class="form-control" placeholder="Giờ đóng cửa" id="close{{$time->day}}" name="close_time[]" value="Closed" readonly="">
                                 </div>
                                 @endif
                                 <div class="form-group col-md-3">

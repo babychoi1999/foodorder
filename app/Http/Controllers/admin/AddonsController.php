@@ -38,11 +38,8 @@ class AddonsController extends Controller
 
     {
 
-        $getcategory = Category::where('is_available','1')->get();
-
-        $getaddons = Addons::select('addons.*')->with('category')->with('item')->join('categories','addons.cat_id','=','categories.id')->where('categories.is_available','1')->where('addons.is_deleted','2')->get();
-
-        return view('addons',compact('getcategory','getaddons'));
+        $getaddons = Addons::where('is_deleted','2')->where('is_available', '1')->get();
+        return view('addons',compact('getaddons'));
 
     }
 
@@ -64,7 +61,7 @@ class AddonsController extends Controller
 
     {
 
-        $getaddons = Addons::select('addons.*')->join('categories','addons.cat_id','=','categories.id')->where('categories.is_available','1')->where('addons.is_deleted','2')->get();
+        $getaddons = Addons::where('is_deleted','2')->get();
 
         return view('theme.addonstable',compact('getaddons'));
 
@@ -107,19 +104,32 @@ class AddonsController extends Controller
     public function store(Request $request)
 
     {
+        if($request->type == 'paid'){
+            $validation = Validator::make($request->all(), $rules = [
 
-        $validation = Validator::make($request->all(),[
-
-          'name' => 'required',
-
-          'cat_id' => 'required',
-
-          'item_id' => 'required',
-
+          'name' => 'required|unique:addons,name',
+          'price'=>'required',
           'type' => 'required',
 
+        ],$messages = [
+            'name.required'=>'Bạn chưa nhập tên sản phẩm thêm',
+            'price.required'=>'Bạn chưa nhập giá',
+            'name.unique'=>'Sản phẩm đã tồn tại',
+          'type.required'=>'Bạn chưa chọn phân loại'
         ]);
+        }else{
+            $validation = Validator::make($request->all(), $rules = [
 
+          'name' => 'required|unique:addons,name',
+          'type' => 'required',
+
+        ],$messages = [
+            'name.required'=>'Bạn chưa nhập tên sản phẩm thêm',
+            'name.unique'=>'Sản phẩm đã tồn tại',
+          'type.required'=>'Bạn chưa chọn phân loại'
+        ]);
+        }
+    
         $error_array = array();
 
         $success_output = '';
@@ -153,10 +163,6 @@ class AddonsController extends Controller
             }
 
             $addons = new Addons;
-
-            $addons->cat_id =$request->cat_id;
-
-            $addons->item_id =$request->item_id;
 
             $addons->name =$request->name;
 
@@ -198,11 +204,8 @@ class AddonsController extends Controller
 
     {
 
-        $addons = Addons::findorFail($request->id);
-
-        $getitem = Item::select('id','item_name')->where('cat_id',$addons->cat_id)->get();
-
-        return response()->json(['ResponseCode' => 1, 'ResponseText' => 'addons fetch successfully', 'ResponseData' => $addons,'item'=>$getitem], 200);
+         $addons = Addons::findorFail($request->id);
+        return response()->json(['ResponseCode' => 1, 'ResponseText' => 'addons fetch successfully', 'ResponseData' => $addons], 200);
 
     }
 
@@ -250,15 +253,16 @@ class AddonsController extends Controller
 
 
 
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(),$rules = [
 
             'name' => 'required',
 
-            'cat_id' => 'required',
-
-            'item_id' => 'required',
-
             'type' => 'required',
+
+        ],$messages=[
+
+            'name.required'=>'Bạn chưa nhập tên sản phẩm thêm',
+          'type.required'=>'Bạn chưa chọn phân loại'
 
         ]);
 
@@ -308,10 +312,6 @@ class AddonsController extends Controller
 
             }
 
-            $addons->cat_id =$request->cat_id;
-
-            $addons->item_id =$request->item_id;
-
             $addons->name =$request->name;
 
             $addons->price =$price;
@@ -355,15 +355,10 @@ class AddonsController extends Controller
     {
 
         $addons=Addons::where('id', $request->id)->delete();
-
         if ($addons) {
-
             return 1;
-
         } else {
-
             return 0;
-
         }
 
     }
@@ -378,18 +373,11 @@ class AddonsController extends Controller
 
         $category = Addons::where('id', $request->id)->update( array('is_available'=>$request->status) );
 
-
-
         $UpdateCart = Cart::where('addons_id', 'LIKE', '%' . $request->id . '%')->update( array('is_available'=>$request->status) );
-
         if ($category) {
-
             return 1;
-
         } else {
-
             return 0;
-
         }
 
     }
@@ -401,21 +389,13 @@ class AddonsController extends Controller
     {
 
         $UpdateDetails = Addons::where('id', $request->id)
-
                     ->update(['is_deleted' => '1']);
-
         $UpdateCart = Cart::where('addons_id', 'LIKE', '%' . $request->id . '%')
-
                             ->delete();
-
         if ($UpdateDetails) {
-
             return 1;
-
         } else {
-
             return 0;
-
         }
 
     }

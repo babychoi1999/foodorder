@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <label class="modal-title text-text-bold-600" id="RditProduct">Change Password</label>
+                <label class="modal-title text-text-bold-600" id="RditProduct">Đổi mật khẩu</label>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -12,22 +12,22 @@
             <form method="post" id="change_password_form">
                 {{csrf_field()}}
                 <div class="modal-body">
-                    <label>Old passwod </label>
+                    <label>Mật khẩu cũ </label>
                     <div class="form-group">
-                        <input type="password" placeholder="Old password" class="form-control" name="oldpassword" id="oldpassword">
+                        <input type="password" placeholder="Mật khẩu cũ" class="form-control" name="oldpassword" id="oldpassword">
                     </div>
-                    <label>New password </label>
+                    <label>Mật khẩu mới </label>
                     <div class="form-group">
-                        <input type="password" placeholder="New password" class="form-control" name="newpassword" id="newpassword">
+                        <input type="password" placeholder="Mật khẩu mới" class="form-control" name="newpassword" id="newpassword">
                     </div>
-                    <label>Confirm password </label>
+                    <label>Xác nhận mật khẩu </label>
                     <div class="form-group">
-                        <input type="password" placeholder="Confirm password" class="form-control" name="confirmpassword" id="confirmpassword">
+                        <input type="password" placeholder="Xác nhận mật khẩu" class="form-control" name="confirmpassword" id="confirmpassword">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="reset" class="btn open comman" data-dismiss="modal" value="Close">
-                    <input type="button" class="btn open comman" onclick="changePassword()" value="Submit">
+                    <input type="reset" class="btn open comman" data-dismiss="modal" value="Hủy">
+                    <input type="button" class="btn open comman" onclick="changePassword()" value="Lưu">
                 </div>
             </form>
         </div>
@@ -38,7 +38,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <label class="modal-title text-text-bold-600" id="RditProduct">Add Review</label>
+                <label class="modal-title text-text-bold-600" id="RditProduct">Thêm đánh giá</label>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -54,15 +54,15 @@
                         <input type="radio" name="rating" value="2" id="star2"><label for="star2">☆</label>
                         <input type="radio" name="rating" value="1" id="star1"><label for="star1">☆</label>
                     </div>
-                    <label>Comment </label>
+                    <label>Bình luận</label>
                     <div class="form-group">
                         <textarea class="form-control" name="comment" id="comment" rows="5" required=""></textarea>
                         <input type="hidden" name="user_id" id="user_id" class="form-control" value="{{Session::get('id')}}">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="reset" class="btn open comman" data-dismiss="modal" value="Close">
-                    <input type="button" class="btn open comman" onclick="addReview()" value="Submit">
+                    <input type="reset" class="btn open comman" data-dismiss="modal" value="Hủy">
+                    <input type="button" class="btn open comman" onclick="addReview()" value="Lưu">
                 </div>
             </form>
         </div>
@@ -80,7 +80,7 @@
             </div>
             <div id="errorr" style="color: red;"></div>
             <div class="modal-body">
-                <img src='{!! asset("front/images/referral.png") !!}' alt="img1" border="0">
+                <img src='{!! asset("public/front/images/referral.png") !!}' alt="img1" border="0">
                 <p style="color: #464648;font-size: 16px;font-weight: 500;margin-bottom: 0; text-align: center;">Chia sẻ mã giới thiệu cho bạn của bạn và cả hai sẽ nhận được <span style="color: #fd3b2f">{{number_format(Session::get('referral_amount'))}}{{$getdata->currency}}</span> tiền thưởng từ chương trình giới thiệu.</p>
                 <hr>
                 <div class="text-center mt-2">
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control text-center" value="{{url('/signup')}}/?referral_code={{Session::get('referral_code')}}" id="myInput" readonly="">
                         <div class="tooltip-refer">
-                            <button onclick="myFunction()" class="btn btn-outline-secondary" onmouseout="outFunc()">
+                            <button onclick="myFunction()" class="btn btn-outline-secondary">
                                 Sao chép
                             </button>
                         </div>
@@ -106,7 +106,7 @@
 <footer>
     <div class="container d-flex justify-content-between flex-wrap">
         <div class="footer-head">
-            <div class="footer-logo"><img src='{!! asset("images/about/".$getabout->footer_logo) !!}' alt=""></div>
+            <div class="footer-logo"><img src='{!! asset("public/images/about/".$getabout->footer_logo) !!}' alt=""></div>
             <p>{!! \Illuminate\Support\Str::limit(htmlspecialchars($getabout->about_content, ENT_QUOTES, 'UTF-8'), $limit = 200, $end = '...') !!}</p>
         </div>
         <div class="footer-socialmedia">
@@ -142,16 +142,16 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- bootstrap js -->
-<script src="{!! asset('front/js/bootstrap.bundle.js') !!}"></script>
+<script src="{!! asset('public/front/js/bootstrap.bundle.js') !!}"></script>
 <!-- owl.carousel js -->
-<script src="{!! asset('front/js/owl.carousel.min.js') !!}"></script>
+<script src="{!! asset('public/front/js/owl.carousel.min.js') !!}"></script>
 <!-- lazyload js -->
-<script src="{!! asset('front/js/lazyload.js') !!}"></script>
+<script src="{!! asset('public/front/js/lazyload.js') !!}"></script>
 <!-- custom js -->
-<script src="{!! asset('front/js/custom.js') !!}"></script>
+<script src="{!! asset('public/front/js/custom.js') !!}"></script>
 <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-<script src="{!! asset('assets/plugins/sweetalert/js/sweetalert.min.js') !!}"></script>
-<script src="{!! asset('assets/plugins/sweetalert/js/sweetalert.init.js') !!}"></script>
+<script src="{!! asset('public/assets/plugins/sweetalert/js/sweetalert.min.js') !!}"></script>
+<script src="{!! asset('public/assets/plugins/sweetalert/js/sweetalert.init.js') !!}"></script>
 <script type="text/javascript">
 function myFunction() {
 
@@ -167,7 +167,7 @@ function myFunction() {
 
     var tooltip = document.getElementById("myTooltip");
 
-    tooltip.innerHTML = "Copied";
+    tooltip.innerHTML = "Đã sao chép";
 
 }
 
@@ -177,7 +177,7 @@ function outFunc() {
 
     var tooltip = document.getElementById("myTooltip");
 
-    tooltip.innerHTML = "Copy to clipboard";
+    tooltip.innerHTML = "Sao chép link";
 
 }
 
@@ -242,7 +242,14 @@ function changePassword() {
             } else
 
             {
+                error_html += '<div class="alert alert-success mt-1">' + ' Đã thay đổi mật khẩu' + '</div>';
+                $('#errors').html(error_html);
 
+                setTimeout(function() {
+
+                    $('#errors').html('');
+
+                }, 10000);
                 location.reload();
 
             }
@@ -621,7 +628,7 @@ function Unfavorite(id, user_id) {
 
                         } else {
 
-                            swal("Cancelled", "Đã có lỗi xảy ra :(", "error");
+                            swal("Đã hủy", "Đã có lỗi xảy ra :(", "error");
 
                         }
 
@@ -629,7 +636,7 @@ function Unfavorite(id, user_id) {
 
                     error: function(e) {
 
-                        swal("Cancelled", "Đã có lỗi xảy ra :(", "error");
+                        swal("Đã hủy", "Đã có lỗi xảy ra :(", "error");
 
                     }
 
@@ -637,7 +644,7 @@ function Unfavorite(id, user_id) {
 
             } else {
 
-                swal("Cancelled", "Your record is safe :)", "error");
+                swal("Đã hủy", "", "error");
 
             }
 
@@ -765,9 +772,9 @@ function OrderCancel(id) {
 
     swal({
 
-            title: "Are you sure?",
+            title: "Bạn chắc chứ?",
 
-            text: "Order amount will be transferred to your wallet",
+            text: "Bạn thực sự muốn hủy đơn hàng?",
 
             type: "warning",
 
@@ -775,9 +782,9 @@ function OrderCancel(id) {
 
             confirmButtonClass: "btn-danger",
 
-            confirmButtonText: "Yes, Cancel it!",
+            confirmButtonText: "Có!",
 
-            cancelButtonText: "No, leave plz!",
+            cancelButtonText: "Không!",
 
             closeOnConfirm: false,
 
@@ -815,9 +822,9 @@ function OrderCancel(id) {
 
                             swal({
 
-                                    title: "Approved!",
+                                    title: "Thành công!",
 
-                                    text: "Order has been cancelled.",
+                                    text: "Đơn hàng đã bị hủy.",
 
                                     type: "success",
 
@@ -847,7 +854,7 @@ function OrderCancel(id) {
 
                         } else {
 
-                            swal("Cancelled", "Something Went Wrong :(", "error");
+                            swal("Đã hủy", "Đã có lỗi xảy ra :(", "error");
 
                         }
 
@@ -855,7 +862,7 @@ function OrderCancel(id) {
 
                     error: function(e) {
 
-                        swal("Cancelled", "Something Went Wrong :(", "error");
+                        swal("Đã hủy", "Đã có lỗi xảy ra :(", "error");
 
                     }
 
@@ -863,7 +870,7 @@ function OrderCancel(id) {
 
             } else {
 
-                swal("Cancelled", "Your record is safe :)", "error");
+                swal("Đã hủy", "", "error");
 
             }
 

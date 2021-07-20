@@ -18,7 +18,7 @@
         ?>
         <tr id="dataid{{$users->id}}">
             <td>{{$users->id}}</td>
-            <td><img src='{!! asset("images/profile/".$users->profile_image) !!}' style="width: 100px;"></td>
+            <td><img src='{!! asset("public/images/profile/".$users->profile_image) !!}' style="width: 100px;"></td>
             <td>{{$users->name}}</td>
             <td>{{$users->email}}</td>
             <td>{{$users->mobile}}</td>

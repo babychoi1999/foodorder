@@ -5,7 +5,7 @@
             <th>Tên khách hàng</th>
             <th>Order Number</th>
             <th>Hình thức thanh toán</th>
-            <th>Payment ID</th>
+            {{-- <th>Payment ID</th> --}}
             <th>Loại đặt hàng</th>
             <th>Trạng thái</th>
             <th>Shipper</th>
@@ -32,16 +32,17 @@
                 @elseif($orders->payment_type =='3')
                 Ví của tôi
                 @else
-                Online
+                VNPAY
                 @endif
             </td>
-            <td>
-                @if($orders->razorpay_payment_id == '')
-                --
-                @else
-                {{$orders->razorpay_payment_id}}
-                @endif
-            </td>
+           {{-- <td>
+    @if($orders->razorpay_payment_id == '')
+    --
+    @else
+    {{$orders->razorpay_payment_id}}
+    @endif
+</td>
+ --}}
             <td>
                 @if($orders->order_type == 1)
                 Vận chuyển

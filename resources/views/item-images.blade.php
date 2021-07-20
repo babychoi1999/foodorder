@@ -26,28 +26,6 @@
                     <p class="text-muted">{{$itemdetails->item_name}}</p>
                     <h4>Mô tả</h4>
                     <p class="text-muted">{{$itemdetails->item_description}}</p>
-                    <h4>Nguyên liệu</h4>
-                    <div class="md-6">
-                        <?php
-                        // dd($getitemimages);
-                        foreach ($getingredients as $ingredients) {
-
-                        ?>
-                        <div class="img-aside">
-                            <img src='{!! asset("images/ingredients/".$ingredients->image) !!}' class="rounded img-thumbnail" style="width: 100px;">
-                            <div class="img-aside-btn">
-                                <button type="button" onClick="Editingredients({{$ingredients->id}})" class="btn mb-2 btn-sm btn-primary">Sửa</button>
-                                @if (env('Environment') == 'sendbox')
-                                <button type="button" class="btn mb-2 btn-sm btn-danger" onclick="myFunction()">Xóa</button>
-                                @else
-                                <button type="submit" onclick="Deleteingredients({{$ingredients->id}})" class="btn mb-2 btn-sm btn-danger">Xóa</button>
-                                @endif
-                            </div>
-                        </div>
-                        <?php
-                        }
-                        ?>
-                    </div>
                 </div>
             </div>
         </div>
@@ -57,7 +35,6 @@
                 <strong>Message!</strong> <span id="msg"></span>
             </div>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddProduct" data-whatever="@addProduct">Thêm ảnh sản phẩm</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddIngredients" data-whatever="@addIngredients">Thêm ảnh nguyên liệu</button>
             <div id="card-display">
                 @include('theme.itemimage')
             </div>

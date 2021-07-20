@@ -37,9 +37,9 @@ return [
     ],
 
     'google' => [
-        'client_id' => '597106951683-9qlujck97impk12q55qmo88qqbebc5dq.apps.googleusercontent.com',
-        'client_secret' => '96nHeBJF78qGqNQ8U-Hyge4c',
-        'redirect' => 'http://localhost/laravel/foodorder/public/auth/google/callback',
+        'client_id' => '583295733866-0hld0qlu0sqlrmiauhd0k9von5crb1u1.apps.googleusercontent.com',
+        'client_secret' => 'XoIOxl5hPvvZxKvJaNxgONb6',
+        'redirect' => 'http://localhost/laravel/foodorder/auth/google/callback',
     ],
 
 ];

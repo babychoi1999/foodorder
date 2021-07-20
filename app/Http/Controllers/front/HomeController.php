@@ -51,16 +51,16 @@ class HomeController extends Controller
     public function contact(Request $request)
     {
         if($request->firstname == ""){
-            return response()->json(["status"=>0,"message"=>"First name is required"],200);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập họ"],200);
         }
         if($request->lastname == ""){
-            return response()->json(["status"=>0,"message"=>"Last name is required"],200);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập tên"],200);
         }
         if($request->email == ""){
-            return response()->json(["status"=>0,"message"=>"Email is required"],200);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập email"],200);
         }
         if($request->message == ""){
-            return response()->json(["status"=>0,"message"=>"Message is required"],200);
+            return response()->json(["status"=>0,"message"=>"Bạn chưa nhập lời nhắn"],200);
         }
         $category = new Contact;
         $category->firstname =$request->firstname;

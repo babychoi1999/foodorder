@@ -76,7 +76,7 @@ class TimeController extends Controller
         $category = Time::findorFail($request->id);
         $getcategory = Time::where('id',$request->id)->first();
         if($getcategory->image){
-            $getcategory->image=url('images/category/'.$getcategory->image);
+            $getcategory->image=url('public/images/category/'.$getcategory->image);
         }
         return response()->json(['ResponseCode' => 1, 'ResponseText' => 'Category fetch successfully', 'ResponseData' => $getcategory], 200);
     }

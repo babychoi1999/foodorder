@@ -29,16 +29,16 @@
                 </div>
                 <small>{{$getitem['category']->category_name}}</small>
                 <div class="extra-food-wrap">
-                    @if (count($freeaddons) == 0 && count($paidaddons) == 0)
+                    @if (count($freeaddons['value']) == 0 && count($paidaddons['value']) == 0)
                     Không có sản phẩm thêm
                     @endif
-                    @if (count($freeaddons) != 0)
+                    @if (count($freeaddons['value']) != 0)
                     <ul class="list-unstyled extra-food">
-                        @if ($freeaddons != "")
+                        @if ($freeaddons['value'] != "")
                         <h3>Miễn phí</h3>
-                        @foreach ($freeaddons as $addons)
+                        @foreach ($freeaddons['value'] as $addons)
                         <li>
-                            <input type="checkbox" name="addons[]" class="Checkbox" value="{{$addons->id}}" price="{{$addons->price}}">
+                            <input type="checkbox" name="addons[]" class="Checkbox" value="{{$addons->id}}" price="{{$addons->price}}" addons_name="{{$addons->name}}">
                             <p>{{$addons->name}}</p>
                         </li>
                         @endforeach
@@ -46,13 +46,13 @@
                         @endif
                     </ul>
                     @endif
-                    @if (count($paidaddons) != 0)
+                    @if (count($paidaddons['value']) != 0)
                     <ul class="list-unstyled extra-food">
                         <h3>Tính phí</h3>
                         <div id="pricelist">
-                            @foreach ($paidaddons as $addons)
+                            @foreach ($paidaddons['value'] as $addons)
                             <li>
-                                <input type="checkbox" name="addons[]" class="Checkbox" value="{{$addons->id}}" price="{{$addons->price}}">
+                                <input type="checkbox" name="addons[]" class="Checkbox" value="{{$addons->id}}" price="{{$addons->price}}" addons_name="{{$addons->name}}">
                                 <p>{{$addons->name}} : {{number_format($addons->price)}}{{$getdata->currency}}</p>
                             </li>
                             @endforeach
@@ -82,10 +82,10 @@
             <div class="col-12">
                 <h4 class="sec-head">Mô tả</h4>
                 <p>{{$getitem->item_description}}</p>
-                @if($getingredients != "")
+                @if (count($getingredients['value']) != 0)
                 <h4 class="sec-head">Nguyên liệu</h4>
                 <div class="ingredients-carousel owl-carousel owl-theme">
-                    @foreach ($getingredients as $ingredients)
+                    @foreach ($getingredients['value'] as $ingredients)
                     <div class="item">
                         <div class="ingredients-box">
                             <img src='{{$ingredients->image }}' alt="">
@@ -93,8 +93,6 @@
                     </div>
                     @endforeach
                 </div>
-                @else
-                <p class="no-data">Không tìm thấy nguyên liệu</p>
                 @endif
             </div>
             <div class="col-12">

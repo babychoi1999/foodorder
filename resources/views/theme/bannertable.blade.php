@@ -14,7 +14,7 @@
         ?>
         <tr id="dataid{{$banner->id}}">
             <td>{{$banner->id}}</td>
-            <td><img src='{!! asset("images/banner/".$banner->image) !!}' class='img-fluid' style='max-height: 50px;'></td>
+            <td><img src='{!! asset("public/images/banner/".$banner->image) !!}' class='img-fluid' style='max-height: 50px;'></td>
             <td>{{@$banner['item']->item_name}}</td>
             <td>{{$banner->created_at}}</td>
             @if (env('Environment') == 'sendbox')

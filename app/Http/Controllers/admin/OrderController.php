@@ -11,6 +11,7 @@ use App\Item;
 use App\Addons;
 use App\Transaction;
 use Auth;
+use Session;
 use App\User;
 use App\OrderDetails;
 
@@ -27,7 +28,6 @@ class OrderController extends Controller
     {
         $getorders = Order::with('users')->select('order.*','users.name')->leftJoin('users', 'order.driver_id', '=', 'users.id')->get();
         $getdriver = User::where('type','3')->get();
-        // dd($getorders);
         return view('orders',compact('getorders','getdriver'));
     }
 
@@ -110,7 +110,7 @@ class OrderController extends Controller
 
         if ($request->status == "6") {
 
-            if ($userdetails->payment_type != "0") {
+            if ($userdetails->payment_type != "0" && $userdetails->payment_type != "4") {
 
                 $wallet = $getalluses->wallet + $userdetails->order_total;
 
@@ -130,18 +130,22 @@ class OrderController extends Controller
             }
         }
 
-        $title = "Order";
+        $title = "Đơn hàng";
 
         if ($request->status == "2") {
             $body = 'Đơn hàng của bạn '.$userdetails->order_number.' đã được xác nhận';
             $ordermessage='Đơn hàng của bạn "'.$userdetails->order_number.'" đã được xác nhận';
-        } else {
-            $body = 'Đơn hàng của bạn '.$userdetails->order_number.' đã được giao cho nhà vận chuyển';
-            $ordermessage='Đơn hàng của bạn "'.$userdetails->order_number.'" đã được giao cho nhà vận chuyển'; 
+        } else if($request->status == "4") {
+            $body = 'Đơn hàng của bạn '.$userdetails->order_number.' đã được giao';
+            $ordermessage='Đơn hàng của bạn "'.$userdetails->order_number.'" đã được giao'; 
+        }
+        else {
+            $body = 'Đơn hàng của bạn '.$userdetails->order_number.' đã bị hủy';
+            $ordermessage='Đơn hàng của bạn "'.$userdetails->order_number.'" đã bị hủy'; 
         }
 
         try{
-            $email=$getalluses->email;
+            $email=$getalluses->email;  
             $name=$getalluses->name;
             $data=['ordermessage'=>$ordermessage,'email'=>$email,'name'=>$name];
 
@@ -268,10 +272,10 @@ class OrderController extends Controller
             $gettoken=User::select('token','name','email')->where('id',$userdetails->user_id)
             ->get()->first();
 
-            $body = 'Đơn hàng của bạn '.$userdetails->order_number.' đang được vận chuyển';
+            $body = 'Đơn hàng của bạn '.$userdetails->order_number.' đã được giao cho tài xế';
 
             try{
-                $ordermessage='Đơn hàng của bạn "'.$userdetails->order_number.'" đang được vận chuyển';
+                $ordermessage='Đơn hàng của bạn "'.$userdetails->order_number.'" đã được giao cho tài xế';
                 $email=$gettoken->email;
                 $name=$gettoken->name;
                 $data=['ordermessage'=>$ordermessage,'email'=>$email,'name'=>$name];
